@@ -1,0 +1,48 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper, total={15cm,25cm}]{geometry}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+%\usepackage{fancyhdr}
+%\setlength{\headheight}{15pt}
+%\pagestyle{empty}
+%\fancyhead[L]{110-1 Bio-MEMS Fabrication Homework}
+%\fancyhead[R]{鄭泊聲 b07611002}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{multirow}
+\graphicspath{ {./images/} }
+\usepackage[backend=biber, citestyle=numeric, bibstyle=numeric, sorting=none]{biblatex}
+\addbibresource{ref.bib}
+\usepackage{mathspec}   %加這個就可以設定字體
+\usepackage{xeCJK}       %讓中英文字體分開設置
+\setCJKmainfont{Noto Serif CJK TC} %設定中文為系統上的字型
+\newCJKfontfamily[chineseSans]\CJKsans{Noto Sans CJK TC}
+\setmainfont{Sabon}
+\setsansfont{IBM Plex Sans}
+\setmonofont{Roboto Mono}
+\XeTeXlinebreaklocale "zh"             %這兩行一定要加，中文才能自動換行
+\XeTeXlinebreakskip = 0pt plus 1pt     %這兩行一定要加，中文才能自動換行
+\renewcommand{\baselinestretch}{1}
+\renewcommand{\figurename}{圖}
+\renewcommand{\tablename}{表}
+\renewcommand{\abstractname}{摘要}
+\renewcommand{\contentsname}{目錄}
+\renewcommand{\listtablename}{表格目錄}
+%\renewcommand*{\bibfont}{\footnotesize}
+\titleformat*{\section}{\Large \bfseries}
+\titleformat*{\subsection}{\large \bfseries}
+\titleformat*{\subsubsection}{\bfseries}
+%\setcounter{tocdepth}{2}
+
+\title{Development of HyperSpectral Imaging system}
+\author{鄭泊聲\thanks{College Student Researcher, Center for Condensed Matter Science, National Taiwan University}
+\and 指導教授:張玉明\thanks{Distinguished Research Fellow, Center for Condensed Matter Science, National Taiwan University}}
+
+\date{\today}
+
+\begin{document}
+    \maketitle
+    \section{第一階段: 硬體}
+\end{document}
