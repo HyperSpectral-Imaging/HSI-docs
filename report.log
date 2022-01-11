@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.10) (preloaded format=xelatex 2021.10.16)  14 NOV 2021 16:06
+This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.10) (preloaded format=xelatex 2021.10.16)  11 JAN 2022 16:54
 entering extended mode
 **"c:/Users/bence/Desktop/Photonic workshop/report/report.tex"
 (c:/Users/bence/Desktop/Photonic workshop/report/report.tex
@@ -912,23 +912,103 @@ LaTeX Font Info:    Trying to load font information for U+lasy on input line 47
 .
 (C:\Users\bence\AppData\Local\Programs\MiKTeX\tex/latex/base\ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
-) [1
+)
+(report.toc [1
 
-]
-(report.aux)
+])
+\tf@toc=\write5
+\openout5 = `report.toc'.
+
+File: ./images//imagesize.jpg Graphic file (type bmp)
+<./images//imagesize.jpg>
+File: ./images//PXL_20210723_094307842.jpg Graphic file (type bmp)
+<./images//PXL_20210723_094307842.jpg>
+ [2]
+File: ./images//PXL_20210507_105656554.jpg Graphic file (type bmp)
+<./images//PXL_20210507_105656554.jpg>
+File: ./images//0423withoutobf.jpg Graphic file (type bmp)
+<./images//0423withoutobf.jpg>
+ [3]
+File: ./images//focusPatern.png Graphic file (type bmp)
+<./images//focusPatern.png>
+
+
+LaTeX Warning: Citation 'tn' on page 4 undefined on input line 123.
+
+File: ./images//errorOfFocus.png Graphic file (type bmp)
+<./images//errorOfFocus.png>
+
+LaTeX Warning: Citation 'tn' on page 4 undefined on input line 129.
+
+
+LaTeX Warning: Citation 'manual' on page 4 undefined on input line 136.
+
+File: ./images//PXL_20210723_094341395.jpg Graphic file (type bmp)
+<./images//PXL_20210723_094341395.jpg>
+[4]
+File: ./images//hsi_from_object_to_cube.jpg Graphic file (type bmp)
+<./images//hsi_from_object_to_cube.jpg>
+File: ./images//lineSpectrum1213LDLS.png Graphic file (type bmp)
+<./images//lineSpectrum1213LDLS.png>
+ [5] [6] [7]
+File: ./images//patternColor.jpg Graphic file (type bmp)
+<./images//patternColor.jpg>
+ [8] [9]
+File: ./images//fitting.jpg Graphic file (type bmp)
+<./images//fitting.jpg>
+File: ./images//cal-2000fitting.jpg Graphic file (type bmp)
+<./images//cal-2000fitting.jpg>
+ [10]
+File: ./images//PXL_20210831_081957648.jpg Graphic file (type bmp)
+<./images//PXL_20210831_081957648.jpg>
+File: ./images//0831focusForOmFullScanHL2000Scaled.jpg Graphic file (type bmp)
+<./images//0831focusForOmFullScanHL2000Scaled.jpg>
+File: ./images//0909Energetic.jpg Graphic file (type bmp)
+<./images//0909Energetic.jpg>
+ [11]
+File: ./images//on_brightest.jpg Graphic file (type bmp)
+<./images//on_brightest.jpg>
+File: ./images//om_on_brightest.JPG Graphic file (type bmp)
+<./images//om_on_brightest.JPG>
+ [12] [13]
+File: ./images//off_brightest.jpg Graphic file (type bmp)
+<./images//off_brightest.jpg>
+File: ./images//om_off_brighest.JPG Graphic file (type bmp)
+<./images//om_off_brighest.JPG>
+File: ./images//on_evenest.jpg Graphic file (type bmp)
+<./images//on_evenest.jpg>
+File: ./images//om_on_evenest.JPG Graphic file (type bmp)
+<./images//om_on_evenest.JPG>
+
+Underfull \hbox (badness 10000) in paragraph at lines 301--318
+
+ []
+
+[14] [15] [16] [17] (report.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 5FFB7824FD96C64CE69322E9892E9669;104.
+(rerunfilecheck)             Checksum: BF6E4F39A3D9E11FD1F575507875D2A5;2431.
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                report
+(biblatex)                and rerun LaTeX afterwards.
+
 Package logreq Info: Writing requests to 'report.run.xml'.
 \openout1 = `report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 20700 strings out of 411295
- 408129 string characters out of 2831840
- 1225180 words of memory out of 3000000
- 40870 multiletter control sequences out of 15000+600000
- 406747 words of font info for 88 fonts, out of 8000000 for 9000
+ 21225 strings out of 411295
+ 424115 string characters out of 2831840
+ 1246890 words of memory out of 3000000
+ 41349 multiletter control sequences out of 15000+600000
+ 410531 words of font info for 110 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 87i,11n,95p,789b,806s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 87i,11n,95p,789b,1353s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on report.pdf (1 page).
+Output written on report.pdf (17 pages).
