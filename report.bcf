@@ -2347,6 +2347,7 @@
     <bcf:citekey order="1">tn</bcf:citekey>
     <bcf:citekey order="2">tn</bcf:citekey>
     <bcf:citekey order="3">manual</bcf:citekey>
+    <bcf:citekey order="4">ixonManual</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

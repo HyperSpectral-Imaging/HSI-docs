@@ -312,13 +312,77 @@
         \caption{OM: Coupled at evenest, collimated off BFP.}
         \label{figure: om_evenest_on}
     \end{figure}
-    \newline \newline \noindent 綜上所述，照明的設定可以說是在光源光譜的完整度(頻寬)與照明範圍中做取捨，我們最後決定採取\ref{section: illuOriginal}節中的設定方式，
+    
+    \noindent 綜上所述，照明的設定可以說是在光源光譜的完整度(頻寬)與照明範圍中做取捨，我們最後決定採取\ref{section: illuOriginal}節中的設定方式，
     雖然照明最後所得的影像會在上下有明顯的暗帶，但情形不算特別嚴重，且可以透過軟體進行後期處裡。若為了排除下上較暗的問題，而採取\ref{illuDark}的設定方式，形同於浪費了LDLS光源系統多數的光譜頻段，
     相形之下比上下的邊緣暗帶是更為嚴重問題，且也與我們因為需要更高頻寬的白光，而使用LDLS的初衷背道而馳。
     \section{第二階段: 軟體}
     \subsection{使用者介面}
     \subsection{.init檔}
     \subsection{軟體結構調整}
+    \subsection{ROI框取}
+    \subsection{背景/參考光譜}
+    \subsection{光譜瀏覽}
     
     \section{掃描速度}
+    \subsection{掃描迴圈}
+    為了要了解決定掃描速度的各個因素，首先要先說明整個掃描的行程是如何進行的。所謂掃描，其實就是在樣品的數個不同位置上以相同的參數拍攝線掃描影像，
+    在使用者設定好掃描範圍與掃描步進(也就是每條掃描線之間的距離)，電腦軟體會執行以下的迴圈，控制iXon與電動載台進行掃描:\textbf{首先}，將電動載台移動到欲拍攝線掃描影像的位置，
+    在每個迴圈中，這個移動的距離是固定的，也就是掃描步進。\textbf{接著}，在確認電動載台已經移動到正確位置後，下指令使iXon開始擷取影像，確認iXon已經完成影像擷取後，iXon會將資料傳回電腦，
+    程式並會進入下一次迴圈，重複執行以上動作的次數，是由程式以使用者設定的掃描距離與掃描步進進行計算。\textbf{迴圈次數執行完成後}，電腦會將每條掃描線上所取得的線掃描影像接合成三維矩陣，為了確保該三維矩陣的「正面」是如肉眼所見的樣品影像，該矩陣還須經過旋轉，
+    此矩陣旋轉的過程也需要時間。
+
+    以下對於掃描時間的討論，皆是以一掃描範圍長3.5mm，掃描步進$10\mu m$(也就是總共拍攝350張線掃描影像並接合)，曝光時間10ms的高光譜影像掃描為例。為了瞭解其他各項影像參數(HSS, VSS)對於掃描速度的影響，
+    我調整iXon的HSS, VSS進行拍攝，並量測不同組合下所有迴圈執行完成所需的時間、迴圈執行後矩陣建立與轉向所需的時間，並以LabVIEW的precision timer(High Resolution Relative Seconds.vi)量測影像擷取完成後傳輸到電腦所需的時間。
+    在以下的測試中，整個掃描迴圈中有三個等待時間，分別是等待電動載台移動至定點的時間，另一是等待iXon影像擷取完成的時間，以及等待iXon將資料傳輸到電腦所需的時間。這三個等待時間的設定方式如下所述:
+    \begin{enumerate}
+        \item 等待電動載臺: 電腦將電動載台移動的指令傳輸給電動載台控制器後，會等待掃描步進\begin{equation} \label{eq: stageWait}
+            \times 200 \div 750 milliseconds
+        \end{equation}，再進行迴圈內的下一個動作。
+        \item 等待iXon擷取影像資料: 電腦在下指令給iXon進行影像擷取後，以一個while loop每1.5倍的曝光時間就詢問一次iXon的狀況，直到iXon回報擷取已完成後，才會進入迴圈內的下一個動作。
+        \item 等待iXon傳輸影像資料: 電腦會等到「讀取iXon影像資料」的程式全部執行完成後，才會繼續迴圈內的下一個動作。
+    \end{enumerate}
+    再以上的設定下，所進行的測試結果如表\ref{tab: measuring}所示，表中的Pull sum代表350次迴圈中\textbf{等待iXon傳輸影像資料}所需時間的和，
+    $t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描結束後矩陣接合與轉換所需的時間。該測試提供了以下資訊，首先，若HSS頻率設定為1/3，掃描所需時間幾乎也會正好三倍，
+    相對的，VSS對掃描的速度影響較小。HSS與VSS對於iXon運作的影響，可以參考iXon說明書的附錄。\cite{ixonManual}
+    接著，\textbf{等待iXon傳輸影像資料}所需的時間極短，每張照片約1-2 milliseconds。最後，矩陣接合與轉換的時間雖然只與電腦的效能有關係，但所需的時間可能會占總掃描時間的將近1/3。
+    \begin{table}[]
+        \centering
+        \begin{tabular}{lll||llll}
+        HSS & VSS & Expo & Pull sum & Scan $t_1$  & $t_2$      & $t_2-t_1$  \\ \hline \hline
+        3   & 0.9 & 0.01 & 554       & 44.1    & 01:28   & 43.9  \\ \hline
+        3   & 1.7 & 0.01 & 502       & 45.25   & 01:10.1 & 25.55 \\ \hline
+        3   & 0.5 & 0.01 & 581       & 43.76   & 01:09.7 & 25.94 \\ \hline
+        1   & 0.9 & 0.01 & 497       & 01:48.9 & 02:20   & 71.1  \\ \hline
+        1   & 1.7 & 0.01 & 633       & 01:50.0 & 02:16.2 & 26.2  \\ \hline
+        1   & 0.5 & 0.01 & 588       & 01:48.7 & 02:13.9 & 25.2  \\
+        (MHz)&(s)     &(s)    & (ms)         & (mm:ss)       & (mm:ss)       & (s)   
+        \end{tabular}
+        \label{tab: measuring}
+        \caption{影像設定對掃描時間的影響。}
+    \end{table}
+    \subsection{速度提升}
+    為了要使掃描的速度進一步加快，我們決定從前述的三個等待時間開始進行優化。首先，在前述的測試中已經顯示出，第三項\textbf{等待iXon傳輸影像資料}所需的等待時間極短，並不是決定掃描速度的關鍵因素。
+    因此以下將集中討論\textbf{等待電動載臺}、\textbf{等待iXon擷取影像資料}兩個等待時間的調整。
+    \subsubsection{電動載臺等待時間}
+    原先用來計算電動載台等待時間的算式\ref{eq: stageWait}，在其他掃描時被發現可能會有等待不足就下指令給iXon進行拍攝的問題，因此改以一個while loop，在下指令給電動載台控制器後，不斷詢問電動載台目前的狀況，
+    直到控制器回報電動載台已經停下後，程式才跳出while loop並繼續下一個動作。然而，這樣的等待方式會造成掃描速度在各項設定下大致都變成表\ref{tab: measuring}的三倍，雖然最為保險，但其速度較難令人接受。
+    最後，我們將電動載台的Drive speed (F)、acceleration/deceleration speed (R)、Startup speed (L)皆設為400，並且就「相信」電動載臺應該以400 pulse per seconds的速度前進，
+    也就是說，我們可以確認電動載台的移動速度是400 micron per seconds(在division number為1的情形下)，並以計算電動載台移動所需的確切時間。實務上，我還加上了10ms的等待時間做為緩衝。
+    這樣的設定方式目前皆沒有遇到任何問題，且掃描時間也回復到表\ref{tab: measuring}中的速度。
+    \subsubsection{iXon擷取影像資料的等待時間}
+    如前所述，這段等待時間是以while loop不斷詢問iXon的方式決定，經過LabVIEW的precision timer量測後，發現以這樣的方式操作，在350張影像的掃描中，以表\ref{tab: measuring}第一列的參數設定，
+    平均每張影像需要0.13213 seconds的時間iXon才會回報擷取完成。為了要減少這段等待時間，我們翻閱Andor SDK的說明書，希望能找到更快確認iXon影像擷取完成的方法，最後嘗試了下列幾項，羅列於此:
+    \begin{enumerate}
+        \item 使用Wait Acqusition 程式來取代while loop不斷詢問的方式，能將等待時間減少至0.119 seconds。
+        \item 將while loop 中每次詢問的間隔時間拉長，對於等待時間沒有影響。以60 ms為例，反而使等待時間變長為0.154 seconds。
+        \item 使用Wait Acqusition 程式，並且下指令讓iXon只擷取影像感測器上我們會使用到的區域(參見圖\ref{figure: image size})，等待時間減少至0.10662 seconds。
+        \item 我曾資思考過以kinetic mode方式驅動iXon連續擷取影像，並設定很低的cycle time，讓iXon將影像存入buffer後就直接準備進行下一次拍攝，而不必先把影像在從buffer中讀出傳輸給電腦。
+        但在同樣的影像設定下，Andor SDK的GetAcquisitionTiming所傳回的最低可設定cycle time，高達0.117 seconds，換句話說，這與單張影像方式驅動的等待時間是相同的。
+        \item Andor SDK中有提供Crop mode，理論上可以提升iXon 的readout speed，但我們的iXon與控制板並不支援。另外也有Fast kinetic mode，會以sensor的一部份區域來做為暫存器，藉此提升速度，
+        但由於我們須用到iXon sensor的整個高度，因此不適用。
+    \end{enumerate}
+    最後我們決定以3.的方式執行，影像感測器上所會用到的子區域則是定義於init檔中。
+    \subsubsection{矩陣接合與旋轉}
+    原先可能需耗費40秒進行的矩陣運算時間，在改以LabVIEW 的loop parrallelism操作後，能夠減少至約7秒的時間就完成。
 \end{document}

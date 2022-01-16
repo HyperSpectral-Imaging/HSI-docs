@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.10) (preloaded format=xelatex 2021.10.16)  11 JAN 2022 16:54
+This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.10) (preloaded format=xelatex 2021.10.16)  16 JAN 2022 17:50
 entering extended mode
 **"c:/Users/bence/Desktop/Photonic workshop/report/report.tex"
 (c:/Users/bence/Desktop/Photonic workshop/report/report.tex
@@ -919,11 +919,11 @@ File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 \tf@toc=\write5
 \openout5 = `report.toc'.
 
+ [2]
 File: ./images//imagesize.jpg Graphic file (type bmp)
 <./images//imagesize.jpg>
 File: ./images//PXL_20210723_094307842.jpg Graphic file (type bmp)
 <./images//PXL_20210723_094307842.jpg>
- [2]
 File: ./images//PXL_20210507_105656554.jpg Graphic file (type bmp)
 <./images//PXL_20210507_105656554.jpg>
 File: ./images//0423withoutobf.jpg Graphic file (type bmp)
@@ -950,10 +950,10 @@ File: ./images//hsi_from_object_to_cube.jpg Graphic file (type bmp)
 <./images//hsi_from_object_to_cube.jpg>
 File: ./images//lineSpectrum1213LDLS.png Graphic file (type bmp)
 <./images//lineSpectrum1213LDLS.png>
- [5] [6] [7]
+ [5] [6] [7] [8]
 File: ./images//patternColor.jpg Graphic file (type bmp)
 <./images//patternColor.jpg>
- [8] [9]
+ [9]
 File: ./images//fitting.jpg Graphic file (type bmp)
 <./images//fitting.jpg>
 File: ./images//cal-2000fitting.jpg Graphic file (type bmp)
@@ -961,11 +961,11 @@ File: ./images//cal-2000fitting.jpg Graphic file (type bmp)
  [10]
 File: ./images//PXL_20210831_081957648.jpg Graphic file (type bmp)
 <./images//PXL_20210831_081957648.jpg>
+ [11]
 File: ./images//0831focusForOmFullScanHL2000Scaled.jpg Graphic file (type bmp)
 <./images//0831focusForOmFullScanHL2000Scaled.jpg>
 File: ./images//0909Energetic.jpg Graphic file (type bmp)
 <./images//0909Energetic.jpg>
- [11]
 File: ./images//on_brightest.jpg Graphic file (type bmp)
 <./images//on_brightest.jpg>
 File: ./images//om_on_brightest.JPG Graphic file (type bmp)
@@ -979,12 +979,15 @@ File: ./images//on_evenest.jpg Graphic file (type bmp)
 <./images//on_evenest.jpg>
 File: ./images//om_on_evenest.JPG Graphic file (type bmp)
 <./images//om_on_evenest.JPG>
+ [14] [15] [16] [17] [18]
 
-Underfull \hbox (badness 10000) in paragraph at lines 301--318
+LaTeX Warning: Citation 'ixonManual' on page 19 undefined on input line 347.
 
- []
 
-[14] [15] [16] [17] (report.aux)
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `tbp') on input line 349.
+
+[19] [20] [21] (report.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -992,7 +995,7 @@ LaTeX Warning: There were undefined references.
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: BF6E4F39A3D9E11FD1F575507875D2A5;2431.
+(rerunfilecheck)             Checksum: 39E8B7669321F17F6FCDE3E201F6D9BC;3333.
 
 Package biblatex Warning: Please (re)run Biber on the file:
 (biblatex)                report
@@ -1003,12 +1006,12 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 21225 strings out of 411295
- 424115 string characters out of 2831840
- 1246890 words of memory out of 3000000
- 41349 multiletter control sequences out of 15000+600000
+ 21252 strings out of 411295
+ 425694 string characters out of 2831840
+ 1252951 words of memory out of 3000000
+ 41376 multiletter control sequences out of 15000+600000
  410531 words of font info for 110 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  87i,11n,95p,789b,1353s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on report.pdf (17 pages).
+Output written on report.pdf (21 pages).
