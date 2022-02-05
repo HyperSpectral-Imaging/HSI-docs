@@ -189,7 +189,7 @@
     檔案的後半部分，才是各張影像的實際資料。在我們的系統中，每個檔案一慮都會包含512張不同波長下的影像，這些影像也各都會有自己的一組影像資料標籤，這512組影像資料標籤也是都儲存在前半部分。
 
     我們使用實驗室過去留下的公版tiff labview library來進行影像檔案的儲存與其中影像資料標籤的管理，在開發初期遇到該library內資料寫入檔案時，端序(byte order)不一致的問題，有些資料是以大端序(big endian)，
-    寫入，有些是以小端序(little endian)寫入，為了配合實驗室Analyser軟體，我們最後一慮皆使用小段序寫入資料。
+    寫入，有些是以小端序(little endian)寫入，為了配合實驗室Analyser軟體，我們最後一慮皆使用小段序寫入資料。另外，將data cobe寫入檔案時，若將三維矩陣直接寫入，會有array index倒置的問題，正確的寫入方式應該是以for迴圈依序將data cube內的單張影像一張一張寫入。
 
     \subsection{座標校正}
     \subsubsection{空間x軸校正}
@@ -213,7 +213,33 @@
     \subsubsection{波長軸(z)校正}
     所謂波長軸的校正，就是要知道on sensor image上每個x軸像素所代表的波長，或說是最終三維影像資料中，每一層二維影像所在的波長。在本階段巨觀系統硬體下，校正方式是將
     標準光源(cal-2000)自物鏡前方直接打入，並在iXon隨附的Solis軟體中得出on snesor image在x方向的平均line profile，
-    接著精確讀出x方向上每個訊號強度波峰所在的x像素，並與標準光源的已知光譜以線性回歸線推出進行減量線，其斜率與截距儲存在ini檔的項目中，軟體即會自動計算並調整螢幕上所顯示的波長。
+    接著精確讀出每個波峰所在的x像素，並與標準光源的已知光譜以線性回歸推出進行減量線，其斜率與截距儲存在ini檔的項目中，軟體即會自動計算並調整螢幕上所顯示的波長。
+    關於Solis軟體的操作細節，請參閱原廠的說明書，在此以Cal-2000為校正光源，說明如何透過Solis軟體擷取校正光譜軸所需的步驟。
+    \begin{enumerate}
+        \item 當iXon的感測晶片被Cal-2000照滿時，應該觀測到如圖\ref{figure: fitting_image}的影像。
+        \item 此時以軟體右上方的控制按鈕，將顯示模式調整為2D，或是以圖\ref{figure: fitting_rowplot}的右鍵選單，在任選位置上畫出Row Plot，即可得到如圖\ref{figure: fitting_profile}的畫面。該畫面是原影像的Horizontal line profile，
+        由於影像的橫軸是光譜軸，因此其也就是Cal-2000的光譜在iXon上的分布。
+        \item 用滑鼠點選光譜，可以看到十字形符號出現在光譜上。用鍵盤的左右鍵，即可移動十字形符號的位置。內視窗的下方會顯示目前十字形位置所在的X方向像素編號，如圖\ref{figure: fitting_profile}中的$X:$。
+        \item 透過鍵盤左右鍵，找出數個波鋒的X方向像素編號，並比對Cal-2000的光譜圖，即可知道這幾個像素編號所代表的波長。以波長對像素編號作圖，即可得出圖\ref{figure: fitting}。
+    \end{enumerate}
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=\linewidth]{cal2000examImage.jpeg}
+        \caption{以cal-2000進行校正}
+        \label{figure: fitting_image}
+    \end{figure}
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=\linewidth]{rowPlot.jpeg}
+        \caption{以cal-2000進行校正}
+        \label{figure: fitting_rowplot}
+    \end{figure}
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=\linewidth]{HLineProfile.jpeg}
+        \caption{以cal-2000進行校正}
+        \label{figure: fitting_profile}
+    \end{figure}
     在接下來微觀系統的校正，方法亦相同，但由於微觀系統採用內部照明的方式，標準光源以光纖方式進入系統，此時僅需在樣品處放置一個銀鏡，即可量測標準光源離開物鏡打到銀鏡後的反射光譜。
     
     \begin{figure}[t]
@@ -317,13 +343,35 @@
     雖然照明最後所得的影像會在上下有明顯的暗帶，但情形不算特別嚴重，且可以透過軟體進行後期處裡。若為了排除下上較暗的問題，而採取\ref{illuDark}的設定方式，形同於浪費了LDLS光源系統多數的光譜頻段，
     相形之下比上下的邊緣暗帶是更為嚴重問題，且也與我們因為需要更高頻寬的白光，而使用LDLS的初衷背道而馳。
     \section{第二階段: 軟體}
-    \subsection{使用者介面}
+    \subsection{使用者介面與功能}
+    美觀 一致性 system control + silver control
+    \subsubsection{ROI框取}
+    \subsubsection{背景/參考光譜}
     \subsection{.init檔}
+    軟體的.init檔案，目標是將一些重要的參數，如系統的影像大小、xyz三軸的校正等，儲存在一個可以更改的文字檔案中，當系統的硬體有更動時，只要調整該.init檔案內的參數值，軟體就可以做出相應的改變，
+    例如依據不同的影像尺寸進行記憶體的控管等。換句話說，透過init檔案儲存系統參數，就可以讓同一套軟體適用於不同的硬體上，只要檔案內的參數經過相應的調整即可。
+
+    本系統的init檔共分為五個區段，分別儲存系統視野、iXon、電動載台、光譜校正與OM相關的參數。軟體在啟動時會將這些參數一次讀取，並儲存到相應的run-time變數中，以方便隨時取用。
+    我們使用的檔案與法式LabVIEW內建的Configuration file VIs所產生的語法，其易於閱讀的特性，讓使用者可以直接透過一般的文字編輯器進行修改。其中某些參數，也會在軟體操作過程中由軟體自行做合適的修正。
+
+    關於.init檔案的詳細使用說明，與每個參數所代表的意義和用處，請參閱本系統的.init檔說明文件(.init file documentaion of HSI system)。
     \subsection{軟體結構調整}
-    \subsection{ROI框取}
-    \subsection{背景/參考光譜}
-    \subsection{光譜瀏覽}
+    隨著程式的軟體功能漸趨完備，操作上越來越複雜，各個功能所需的程式碼也都會佔去龐大的空間，使的程式碼的原檔變得過於冗長，變得非常難以閱讀與debug。且許多會重複使用、或是功能相近的程式碼也浪費了不少空間。
+    另外，許多資料或變數必須在程式的不同區塊間傳遞，常常需要拉很長的data wire，且每個需要取用資料的地方都必須拉一條線，也造成資料流變得混亂。為了改善這些問題，並使後續的軟體開發更加便捷，我們決定將程式進行大規模的改造，將程式碼全部模組化，
+    主程式只要控制UI與執行流程，其餘功能皆以subVI方式呼叫執行。另外，也以各種local variable、global variable與functional global variable來儲存並傳遞資料，使程式的
+    資料流變的清楚明確。
     
+    首先，將程式完全模組化，所有大小功能都以subVI funcation call來取代後，主程式的檔案尺寸縮減至一半，整體的程式碼也變得更加整齊、一目瞭然。在前端使用者介面完全不變的情形下，這些sunVI之間的API需要經過不少設計與調整，
+    才能確保基本的運作都能以正確的參數完成，且必要的資訊資訊可以呈現在使用者面介面上。我們也使用了許多control reference的傳送，來使subVI能夠直接控制主程式上的使用者介面，這樣的操作方式減少了許多不必要的資料流，在整個模組化的過程中相當重要。
+    我們也同時順便確立了程式的執行流程，在原始碼更易讀的情形下，更容易看出程式目前的所在階段，對於UI要因應不同階段的控制，也很有幫助。
+
+    接著，我們將程式的資料流大幅精進。主要透過以下三種方式來操作:
+    \begin{enumerate}
+        \item 若是主程式內的UI相關資訊，例如使用者的滑鼠點擊位置，就以local variable來儲存，以方便主程式內不同的event或不同階段的程式取用資料。
+        \item 若是.init檔或是影像擷取設定相關的資料就以project global variable的方式儲存，如此一來每一個subVI都可以自行對同一個變數進行讀取，能夠簡化API的設計。
+        \item 最主要的data cube，以一個functional global variable的方式儲存，主要的原因是三維影像資料的數據較多，若以傳統的全域變數方式儲存，每次讀取時資料都會被複製一次，造成記憶體的浪費。
+        另外，FGV能夠在資料儲存時一並執行程式，除了可以對racing的狀況進行處裡外，也方便做一些基礎的資料處理。
+    \end{enumerate}
     \section{掃描速度}
     \subsection{掃描迴圈}
     為了要了解決定掃描速度的各個因素，首先要先說明整個掃描的行程是如何進行的。所謂掃描，其實就是在樣品的數個不同位置上以相同的參數拍攝線掃描影像，
@@ -384,5 +432,16 @@
     \end{enumerate}
     最後我們決定以3.的方式執行，影像感測器上所會用到的子區域則是定義於init檔中。
     \subsubsection{矩陣接合與旋轉}
-    原先可能需耗費40秒進行的矩陣運算時間，在改以LabVIEW 的loop parrallelism操作後，能夠減少至約7秒的時間就完成。
+    原先可能需耗費40秒進行的矩陣運算時間，在改以LabVIEW 的loop parrallelism操作後，能夠減少至約7秒的時間就完成。\footnote{不過該耗時仍與電腦的效能高度相關，實測在一樣的設定下，有可能僅需3秒即完成。}
+    在經過以上的各式調整後，同樣進行350張線掃描，掃瞄範圍3.5mm，以0.01秒的曝光時間、0.9 HSS、3MHz VSS，掃描時間$t_1$正好為一分鐘，另約需4秒進行矩陣轉換，總計1:05即可完成掃描，並開始進行觀測。
+
+    \section{第三階段: 軟體}
+    \subsection{影像檔案讀取與進階存檔}
+    \subsection{光譜瀏覽}
+    \section{已知問題}
+    \begin{enumerate}
+        \item \textbf{OM Camera Switch}: 本系統初期是使用Mightex小型相機作為OM影像的感測器，但由於其感測器尺寸比影像還小，限制了ROI功能的視野，因此後期換做Canon M200來做為OM相機，
+        並以其來實作ROI功能。原初規劃要讓軟體能透過init檔在兩種相機中切換，但由於ROI功能所需的影像裁切功能參數，初期並未實現於Mightex相機的程式碼中。原本只是將兩套形式相同，但用於不同廠牌相機的程式已case structure切換，
+        但由於ROI功能完成後基本上已不適用Mightex相機，因此原本的mightex程式碼就已Disabled diagram的方式續存於主程式中。若將這些diagram重新enable，理論上就可切換至mightex OM模式，但其對ROI功能的使用尚待調整。
+    \end{enumerate}
 \end{document}
