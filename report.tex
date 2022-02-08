@@ -345,7 +345,20 @@
     \section{第二階段: 軟體}
     \subsection{使用者介面與功能}
     美觀 一致性 system control + silver control
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{acquire.jpeg}
+        \caption{在影像模式下的軟體介面。}
+        \label{figure: acquire mode}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{scanning.jpeg}
+        \caption{掃描時的軟體介面。}
+        \label{figure: scanning}
+    \end{figure}
     \subsubsection{ROI框取}
+
     \subsubsection{背景/參考光譜}
     \subsection{.init檔}
     軟體的.init檔案，目標是將一些重要的參數，如系統的影像大小、xyz三軸的校正等，儲存在一個可以更改的文字檔案中，當系統的硬體有更動時，只要調整該.init檔案內的參數值，軟體就可以做出相應的改變，
@@ -438,6 +451,18 @@
     \section{第三階段: 軟體}
     \subsection{影像檔案讀取與進階存檔}
     \subsection{光譜瀏覽}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{detectHW.jpeg}
+        \caption{軟體會自行偵測硬體系統是否存在。}
+        \label{figure: detect hardware}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{readmode.jpeg}
+        \caption{軟體在讀取模式下的介面。}
+        \label{figure: om_evenest_on}
+    \end{figure}
     \section{已知問題}
     \begin{enumerate}
         \item \textbf{OM Camera Switch}: 本系統初期是使用Mightex小型相機作為OM影像的感測器，但由於其感測器尺寸比影像還小，限制了ROI功能的視野，因此後期換做Canon M200來做為OM相機，

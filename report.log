@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.10) (preloaded format=xelatex 2021.10.16)  5 FEB 2022 12:07
+This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.10) (preloaded format=xelatex 2021.10.16)  8 FEB 2022 23:24
 entering extended mode
 **"c:/Users/bence/Desktop/Photonic workshop/report/report.tex"
 (c:/Users/bence/Desktop/Photonic workshop/report/report.tex
@@ -795,7 +795,11 @@ Space].
 \@quotelevel=\count441
 \@quotereset=\count442
 
-(report.aux)
+(report.aux
+
+LaTeX Warning: Label `figure: om_evenest_on' multiply defined.
+
+)
 \openout1 = `report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
@@ -809,8 +813,7 @@ LaTeX Font Info:    ... okay on input line 45.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 45.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 4
 5.
-
-(C:\Users\bence\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmr.fd
+ (C:\Users\bence\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 45.
@@ -987,18 +990,31 @@ File: ./images//on_evenest.jpg Graphic file (type bmp)
 <./images//on_evenest.jpg>
 File: ./images//om_on_evenest.JPG Graphic file (type bmp)
 <./images//om_on_evenest.JPG>
- [14] [15] [16] [17] [18] [19]
-[20]
+ [14] [15]
+File: ./images//acquire.jpeg Graphic file (type bmp)
+<./images//acquire.jpeg>
+File: ./images//scanning.jpeg Graphic file (type bmp)
+<./images//scanning.jpeg>
+ [16] [17] [18] [19]
+[20] [21]
 
-LaTeX Warning: Citation 'ixonManual' on page 21 undefined on input line 395.
+LaTeX Warning: Citation 'ixonManual' on page 22 undefined on input line 408.
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 397.
+               Default added (so using `tbp') on input line 410.
 
-[21] [22] [23] [24] (report.aux)
+[22] [23]
+File: ./images//detectHW.jpeg Graphic file (type bmp)
+<./images//detectHW.jpeg>
+File: ./images//readmode.jpeg Graphic file (type bmp)
+<./images//readmode.jpeg>
+ [24] [25] [26] (report.aux)
 
 LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 8BEBDADD9714DB91F2B2BE9311AF9451;3704.
@@ -1012,12 +1028,12 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 21285 strings out of 411295
- 426591 string characters out of 2831840
- 1257489 words of memory out of 3000000
- 41405 multiletter control sequences out of 15000+600000
+ 21324 strings out of 411295
+ 427571 string characters out of 2831840
+ 1257610 words of memory out of 3000000
+ 41440 multiletter control sequences out of 15000+600000
  410531 words of font info for 110 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  87i,11n,95p,789b,1353s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on report.pdf (24 pages).
+Output written on report.pdf (26 pages).
