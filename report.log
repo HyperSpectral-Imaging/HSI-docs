@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.10) (preloaded format=xelatex 2021.10.16)  11 FEB 2022 08:34
+This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.10) (preloaded format=xelatex 2021.10.16)  12 FEB 2022 18:10
 entering extended mode
 **"c:/Users/bence/Desktop/Photonic workshop/report/report.tex"
 (c:/Users/bence/Desktop/Photonic workshop/report/report.tex
@@ -999,22 +999,28 @@ File: ./images//scanning.jpeg Graphic file (type bmp)
 [20]
 File: ./images//roi.jpeg Graphic file (type bmp)
 <./images//roi.jpeg>
+ [21]
+
+LaTeX Warning: Reference `equation: reflection' on page 22 undefined on input l
+ine 402.
+
 File: ./images//reflection.jpeg Graphic file (type bmp)
 <./images//reflection.jpeg>
- [21] [22] [23]
+[22] [23] [24]
 
-LaTeX Warning: Citation 'ixonManual' on page 24 undefined on input line 436.
+LaTeX Warning: Citation 'ixonManual' on page 25 undefined on input line 455.
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 438.
+               Default added (so using `tbp') on input line 457.
 
-[24] [25]
+[25] [26]
 File: ./images//detectHW.jpeg Graphic file (type bmp)
 <./images//detectHW.jpeg>
+ [27]
 File: ./images//readmode.jpeg Graphic file (type bmp)
 <./images//readmode.jpeg>
- [26] [27] [28] (report.aux)
+ [28] [29] (report.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1033,12 +1039,12 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 21344 strings out of 411295
- 428039 string characters out of 2831840
- 1259798 words of memory out of 3000000
- 41458 multiletter control sequences out of 15000+600000
+ 21356 strings out of 411295
+ 428818 string characters out of 2831840
+ 1256802 words of memory out of 3000000
+ 41470 multiletter control sequences out of 15000+600000
  410531 words of font info for 110 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  87i,11n,95p,789b,1353s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on report.pdf (28 pages).
+Output written on report.pdf (29 pages).
