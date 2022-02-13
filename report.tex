@@ -44,6 +44,14 @@
 
 \begin{document}
     \maketitle
+    \section*{致謝}
+    特別感謝張玉明老師將本系統的開發交付給我，並在過程中給予無私的支持與指導。
+    本系統開發承蒙科技部110學年度大專學生參與專題研究計畫
+支持(計畫編號110-2813-C-002-218-M)，另感謝實驗室的陳
+維良博士、黎文鴻博士帶我了解光學系統的基礎知識，羅詔元博士在LabVIEW程式撰寫給予許多指導，及黃鈺淳在研發過程中鼎力
+協助。
+    \section*{文件說明}
+    本文件中所提到的所有程式檔案，皆在主程式專案HIS.lvproj中。
     \tableofcontents
     \section{第一階段: 硬體}
     第一階段系統是為了在巨觀尺度下觀測實域影像而設計，在本計畫中也是作為概念驗證與軟體開發的雛型。
@@ -159,7 +167,7 @@
 
     \begin{figure}[t]
         \centering
-        \includegraphics[width=0.5\linewidth]{hsi_from_object_to_cube.jpg}
+        \includegraphics[width=0.75\linewidth]{hsi_from_object_to_cube.jpg}
         \caption{線掃描的原理}
         \label{figure: lineScan}
     \end{figure}
@@ -179,7 +187,7 @@
     在掃描後，會得到數張這樣的二維影像，疊合後成為一張三維的影像，在程式中，是以三維的矩陣形式處裡。一開始所疊合而成的三維影像，其x,y,z軸分別為波長、樣品y、樣品x軸，
     與實際的樣品空間座標有出入，因此必須將矩陣的x與z軸調換(transpose)，才能產生出一個與樣品空間相同的影像。該影像即是由512張(由於on sensor image在波長方向有512個pixel)各個波長下的樣品二維影像所組成。
 
-    \subsection{影像儲存}
+    \subsection{影像儲存}\label{section: saveTiff}
     掃描完成後的三維矩陣，我們將其儲存為TIFF影像格式。TIFF全名維Tagged Image File Format，顧名思義，其檔案中能儲存影像與描述影像的各式標籤(Tag)。
     除此之外，Tiff格式支援儲存多個的影像在一個檔案中，故我們能將三維矩陣的每一層二維影像，都儲存在同一個檔案中。
 
@@ -498,13 +506,54 @@
     \section{第三階段: 軟體}
     本階段的軟體開發主要集中在影像資料的分析功能。
     \subsection{影像檔案讀取與進階存檔}
-    \subsection{光譜瀏覽}
-    \begin{figure}
+    \subsubsection{檔案讀取}
+    本系統軟體截至目前為止皆以掃描功能為核心進行開發，只有在掃描結束後能對掃描的資料進行瀏覽，存檔並關閉後只能使用其他軟體來瀏覽掃描資料。為了讓使用者能有便捷的界面對過去掃描的資料進行瀏覽，我決定以
+    原有的瀏覽介面，直接加上讀取檔案的功能。在開發上，讀取檔案的程式碼並不複雜。由節\ref{section: saveTiff}所述可知，Tiff檔案由影像資料標籤，與影像資訊本身組合而成。讀取Tiff檔案的方式相當直觀，
+    首先讀取影像資料標籤，並透過影像資料標籤得知影像在檔案中的位置與大小，再讀取影像本身。不過由於我們所採用的為經過擴充之後的Tiff檔案，除了有公版的Tiff標籤外，尚有其他實驗室自行開發的軟體會需要的標籤，
+    這些標籤分別儲存在兩個影像資料索引中(Image File Directory):公版IFD與實驗室的ULS IFD\footnote{IFD基本上就是將一群用途相似的影像資料標籤放在檔案中的相鄰位置，組成一個影像資料標籤的群組。}，
+    ，可以參閱lib/Halloween/Specification21\textunderscore01\textunderscore27HSI.xlsx檔案詳列本系統所使用到的影像資料標籤與影像資料索引。
+    整體讀檔的操作順序大致如下所述。
+    \begin{enumerate}
+        \item 檔案起始處，跳過位元端序宣告\footnote{讀取檔案時理應先確認檔案寫入的端序設定，但由於本系統寫檔時一律以little-endian方式，因此讀檔時也一律採取little-endien設定，故不再讀取檔案起始處的端序宣告。}等數個位元組後(請參閱原始碼)，即是公版IFD，從此處開始讀取基本的影像資料標籤。
+        \item 因為每個影像資料標籤的大小皆為固定的12位元組，從此處開始每12個位元組即為一個影像資料標籤，依序讀取即可。
+        \item 每個影像資料標籤皆依序包含:2個位元組儲存其ID(一個U16數字)、2個位元組儲存其檔案類型、4個位元組儲存其數量，剩下4個位元組儲存標籤資料本身。依此方式，即可讀出影像資料的ID，從前述.xlsx檔案即可對照出其意義，接著讀資料檔案型態後，即可以相應的方式將其最後幾個位元組的資料unflatten出來。
+        \item 公版影像資料標籤中，有一個標籤是實驗室IFD的位置，從這個位置資訊即可以相同方式讀出所有必須的影像資料標籤。
+        \item 公版影像資料標籤中，另有一個標籤是影像資料的位置(image strip offset)，透過該位置資訊即可知道影像資料的位置，並存其他影像資料標籤計算出其大小，直接到該位置將正確大小的資料unflatten為正確大小的三維I32矩陣，所得的矩陣就跟剛掃描完時的矩陣擁有相同的性質，可以被原本的軟體直接讀取。
+        \item 將該矩陣寫入dataCube.vi FGV中，就與剛掃描完時一樣，軟體即可以原本的方式讀取並呈現檔案中的資料。
+    \end{enumerate}
+    \subsubsection{建立「讀取模式」}
+    有時使用者開啟軟體，僅是需要讀取檔案並瀏覽光譜，此時可以點按進入Readout Mode，系統即會跳過軟體的影像設定與掃描程序，直接進入瀏覽模式。此部分的程式與Shut Down按鍵相同，皆是透過控制while loop的離開來達成軟體程序的切換。
+    另外，系統軟體開啟時，會自動啟動iXon的Andor SDK與Canon EDSDK，軟體會透過這兩個外部程式庫的執行錯誤來判定軟體系統是否有成功與硬體系統連接，並跳出視窗提醒使用者，同時也會避免對沒有連接的硬體系統下達指令，以避免更多錯誤產生。
+    若軟體偵測到系統的主要影像感測器iXon沒有連接上，即會自動進入讀取模式。
+    \begin{figure}[ht]
         \centering
         \includegraphics[width=\linewidth]{detectHW.jpeg}
         \caption{軟體會自行偵測硬體系統是否存在。}
         \label{figure: detect hardware}
     \end{figure}
+    \subsubsection{TIFF格式之擴充}
+    為了要使軟體在讀檔時能夠適當地調整UI，例如顯示實際掃描尺寸的圖標，並且在掃描影像檔案內儲存影像分析與比較時必要的資訊，我將原本的實驗室IFD內的影像資料標籤進行了擴充，可以參閱前述的.xlsx規格檔案，其中編號(ID)70-77者
+    為本次所新增的標籤。要在存檔時新增標籤，可以如節\ref{section: saveTiff}所述一般以實驗室內原有的Tiff存檔程式庫進行操作即可。基本上，在SaveScan\textunderscore mk3.vi中，有一個ULSIFD subVI負責所有實驗室IFD影像資標籤的整理，
+    只要在這個subVI內已newTag VI建立新的標籤，並以常數方式指定好標籤的ID、類型、數量、與內容即可。其中，標籤的資料內容需要建立起合適的API從主程式傳送到該VI內，我以一個cluster來將許多欲儲存的資料包裹起來傳送，
+    並在這個VI中再進行unbundle，其中，project內的tiffHsiInfo.ctl與tiffInfo.ctl兩個type define即為了這個以cluster作為引數傳送的操作所建立。表\ref{tab: new tag}列出這次所新增的所有標籤，這些標籤都在實驗室IFD區段，讀取方式與原本的標籤亦都相同。
+    \begin{table}[ht]
+        \begin{tabular}{lllll}
+        ID & Type    & No. & Content & Description \\
+        70 & 4(U32)  & 1 & HSI: Step Length      & in um                   \\
+        71 & 11(SGL) & 1 & HSI: Real Y Dimension & in mm                   \\
+        72 & 11(SGL) & 1 & HSI: Real X Dimention & in mm                   \\
+        73 & 11(SGL) & 1 & HSI: VSS of iXon      & in sec                  \\
+        74 & 4(U32)  & 1 & HSI: HSS of iXon      & in MHz                  \\
+        75 & 1(U8)   & 1 & HSI: bkg exist?       & 1 for true, 0 for false \\
+        76 & 1(U8)   & 1 & HSI: ref exist?       & 1 for true, 0 for false \\
+        77 & 11(SGL) & 1 & HSI: Gain             &                        
+        \end{tabular}
+        \caption{新增的影像資料標籤}
+        \label{tab: new tag}
+        \end{table}
+    \subsubsection{背景/參考光譜之儲存}
+    \subsection{光譜瀏覽功能}
+    
     \begin{figure}
         \centering
         \includegraphics[width=\linewidth]{readmode.jpeg}
