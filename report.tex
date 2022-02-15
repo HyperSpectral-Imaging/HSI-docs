@@ -3,7 +3,7 @@
 \usepackage{titlesec}
 \usepackage{graphicx}
 \usepackage{float}
-\usepackage{hyperref}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 %\usepackage{fancyhdr}
 %\setlength{\headheight}{15pt}
 %\pagestyle{empty}
@@ -51,7 +51,16 @@
 維良博士、黎文鴻博士帶我了解光學系統的基礎知識，羅詔元博士在LabVIEW程式撰寫給予許多指導，及黃鈺淳在研發過程中鼎力
 協助。
     \section*{文件說明}
-    本文件中所提到的所有程式檔案，皆在主程式專案HIS.lvproj中。
+    本文件的目的在於詳細紀錄系統開發的過程，宗旨是幫助閱讀者了解「為甚麼這裡要這樣設計?」之類的問題。
+    若您是本系統的使用者，建議您不需要閱讀此份文件。若您是本系統未來的開發者，且主要的開發領域在於系統的硬體，建議您可以在遇到問題時，到本文件中尋找答案。
+    若您是本系統的軟體開發人員，強烈建議您在開始開發前將本文件詳盡閱讀，否則可能會發生許多程式上的誤解，或是發生不知從何偵錯等困境。本文件中所提到的所有程式檔案，皆在主程式專案HIS.lvproj中。
+
+    除此之外，
+    \begin{itemize}
+        \item 我在軟體發過程中所撰寫的程式，皆有詳盡的說明於此: \href{https://cheng-posheng.gitbook.io/hsi-main-project-api-documentation/}{HSI Main Project API Documentation} \footnote{\url{https://cheng-posheng.gitbook.io/hsi-main-project-api-documentation/}}
+        \item .init 檔案的設定方式與參數校正說明，可以在此找到: \href{https://bencer.notion.site/init-file-documentation-for-HSI-system-f05871402b4142f085a79efb22f836e6}{.init file documentation for HSI system} \footnote{\url{https://bencer.notion.site/init-file-documentation-for-HSI-system-f05871402b4142f085a79efb22f836e6}}
+    \end{itemize}
+    本系統開發的所有程式碼與相關文件，皆可在此Github organization找到: \url{https://github.com/HyperSpectral-Imaging}
     \tableofcontents
     \section{第一階段: 硬體}
     第一階段系統是為了在巨觀尺度下觀測實域影像而設計，在本計畫中也是作為概念驗證與軟體開發的雛型。
@@ -218,7 +227,7 @@
         \caption{A self-designed pattern for focusing and calibration.}
         \label{figure: self pattern}
     \end{figure}
-    \subsubsection{波長軸(z)校正}
+    \subsubsection{波長軸(z)校正} \label{section: z cali}
     所謂波長軸的校正，就是要知道on sensor image上每個x軸像素所代表的波長，或說是最終三維影像資料中，每一層二維影像所在的波長。在本階段巨觀系統硬體下，校正方式是將
     標準光源(cal-2000)自物鏡前方直接打入，並在iXon隨附的Solis軟體中得出on snesor image在x方向的平均line profile，
     接著精確讀出每個波峰所在的x像素，並與標準光源的已知光譜以線性回歸推出進行減量線，其斜率與截距儲存在ini檔的項目中，軟體即會自動計算並調整螢幕上所顯示的波長。
@@ -452,8 +461,8 @@
     我調整iXon的HSS, VSS進行拍攝，並量測不同組合下所有迴圈執行完成所需的時間、迴圈執行後矩陣建立與轉向所需的時間，並以LabVIEW的precision timer(High Resolution Relative Seconds.vi)量測影像擷取完成後傳輸到電腦所需的時間。
     在以下的測試中，整個掃描迴圈中有三個等待時間，分別是等待電動載台移動至定點的時間，另一是等待iXon影像擷取完成的時間，以及等待iXon將資料傳輸到電腦所需的時間。這三個等待時間的設定方式如下所述:
     \begin{enumerate}
-        \item 等待電動載臺: 電腦將電動載台移動的指令傳輸給電動載台控制器後，會等待掃描步進\begin{equation} \label{eq: stageWait}
-            \times 200 \div 750 milliseconds
+        \item 等待電動載臺: 電腦將電動載台移動的指令傳輸給電動載台控制器後，會等待\begin{equation} \label{eq: stageWait}
+            \text{掃描步進}\times 200 \div 750 \quad milliseconds
         \end{equation}，再進行迴圈內的下一個動作。
         \item 等待iXon擷取影像資料: 電腦在下指令給iXon進行影像擷取後，以一個while loop每1.5倍的曝光時間就詢問一次iXon的狀況，直到iXon回報擷取已完成後，才會進入迴圈內的下一個動作。
         \item 等待iXon傳輸影像資料: 電腦會等到「讀取iXon影像資料」的程式全部執行完成後，才會繼續迴圈內的下一個動作。
@@ -534,7 +543,7 @@
     \subsubsection{TIFF格式之擴充}
     為了要使軟體在讀檔時能夠適當地調整UI，例如顯示實際掃描尺寸的圖標，並且在掃描影像檔案內儲存影像分析與比較時必要的資訊，我將原本的實驗室IFD內的影像資料標籤進行了擴充，可以參閱前述的.xlsx規格檔案，其中編號(ID)70-77者
     為本次所新增的標籤。要在存檔時新增標籤，可以如節\ref{section: saveTiff}所述一般以實驗室內原有的Tiff存檔程式庫進行操作即可。基本上，在SaveScan\textunderscore mk3.vi中，有一個ULSIFD subVI負責所有實驗室IFD影像資標籤的整理，
-    只要在這個subVI內已newTag VI建立新的標籤，並以常數方式指定好標籤的ID、類型、數量、與內容即可。其中，標籤的資料內容需要建立起合適的API從主程式傳送到該VI內，我以一個cluster來將許多欲儲存的資料包裹起來傳送，
+    只要在這個subVI內以newTag VI建立新的標籤，並以常數方式指定好標籤的ID、類型、數量、與內容即可。其中，標籤的資料內容需要建立起合適的API從主程式傳送到該VI內，我以一個cluster來將許多欲儲存的資料包裹起來傳送，
     並在這個VI中再進行unbundle，其中，project內的tiffHsiInfo.ctl與tiffInfo.ctl兩個type define即為了這個以cluster作為引數傳送的操作所建立。表\ref{tab: new tag}列出這次所新增的所有標籤，這些標籤都在實驗室IFD區段，讀取方式與原本的標籤亦都相同。
     \begin{table}[ht]
         \begin{tabular}{lllll}
@@ -548,12 +557,35 @@
         76 & 1(U8)   & 1 & HSI: ref exist?       & 1 for true, 0 for false \\
         77 & 11(SGL) & 1 & HSI: Gain             &                        
         \end{tabular}
-        \caption{新增的影像資料標籤}
+        \caption{新增的影像資料標籤。}
         \label{tab: new tag}
         \end{table}
     \subsubsection{背景/參考光譜之儲存}
+    參見SaveScan\textunderscore mk3.vi可以發現，若是掃描時backgroundExist或referenceExist為true，軟體會將背景光譜與參考光譜寫入在檔案的最後面。由iXon每次擷取影像時的影像尺寸皆為固定，
+    因此背景/參考光譜影像的尺寸與其所需的位元組數量，也可以由其他影像資料標籤，如影像長寬與data cube層數等標籤得知，因此讀檔時軟體僅須由檔案最後，往回已推得的位元組開始讀取
+    \footnote{此方式實非標準的tiff檔案寫入方式，只是較方便的解決之道。標準的作法應該是多建立新的tag，用以儲存背景/參考光譜影像的位置，讀檔時先從tag讀到影像的位置，再到該位置讀取影像。}，
+    即可讀出背景/參考光譜影像，並如掃描時一般，將其導入
+    background.vi與reference.vi中。由於背景/參考光譜的校準是在dataCube.vi FGV中進行，且是該FGV偵測到backgroundExist或referenceExist為true時才會進行，因此將背景/參考光譜讀入相應的FGV之後，
+    請確保backgroundExist或referenceExist已設為true，再將已經unflatten的三維掃描影像矩陣寫入dataCube.vi中，即可完成讀檔時的背景/參考光譜校準。
     \subsection{光譜瀏覽功能}
-    
+    在軟體介面中，共有兩個影像顯示螢幕與兩個光譜顯示螢幕，在這些顯示螢幕上，當畫面有顯示資料時，使用者可以與這些顯示螢幕以不同方式互動，來更仔細的瀏覽影像資料。最簡單的方式是以滑鼠點擊想要瀏覽的位置，
+    軟體即會把該位置的光譜資料更詳盡的顯示出來。但軟體除了把該位置的光譜資料讀出外，也會在這些螢幕上顯示出一些相應的圖標，來輔助使用者了解目前正在進行瀏覽的資料，是從哪個位置所讀出。舉例來說，在瀏覽模式中，
+    當使用者點擊右側螢幕上樣品影像的任一位置時，event structure中的right graph mouse down event中的程式，會在滑鼠點擊位置上畫上圖標，並換算且在畫面上顯示目前點擊的空間座標位置，來標示目前的瀏覽位置，並將滑鼠點擊位置轉換成目前顯示資料的array index，
+    並以此index來讀取該位置的光譜，顯示在右側的光譜螢幕上，左側的影像螢幕則會顯示出該位置的線掃描光譜影像(on sensor image)，若使用者點擊該線掃描光譜影像，程式會以event structure將滑鼠點擊位置送入drawIntensityGraph.vi中，
+    此vi會將滑鼠點擊位置換算成array index，並畫上圖標，讀出該位置的line profile，並將其顯示在左側的光譜螢幕上。使用者在任何時候若點擊光譜螢幕，系統同樣會將滑鼠點擊位置送入另一個waveformGraphDraw.vi中，
+    此vi會將滑鼠點擊位置換算成array index，並畫上圖標，讀出該波長下的強度，並把波長與強度顯示在畫面上。
+
+    這些讀取滑鼠位置的vi與event structure內部的程式皆大同小異，首先會透過該螢幕的property node，讀出顯示幕在電腦螢幕上的所在位置與尺寸，並以此些資訊與得到的滑鼠點擊位置，
+    換算出array index與空間座標(或是波長)，將這些資訊回傳到主程式的control上，或是依index讀取相應的光譜。同時這些程式碼也會在正確的顯示螢幕上以一系列的draw picture functions畫出圖標。
+
+    軟體畫面上負責顯示目前所點擊位置的空間與波長座標的這些control，也可以用來調整瀏覽位置。使用者可以直接輸入欲瀏覽的座標位置，或是以control上的increment/decrement小按鈕來做調整。
+    當這些control的值被使用者以上述兩種方法更動時，軟體會以與前一段所述相同的方式呼叫相同的程式碼或vi，來重新繪製顯示幕上的圖標與各個顯示幕上所應顯示的資訊，需要特別注意的是，
+    由於程式碼與vi皆是接收\textbf{滑鼠點擊位置}作為繪製與換算的參數，當使用者是直接更改這些座標值時，需先在event structure中把座標值換算成滑鼠點擊位置(跟前一段使用相同的property node)，再送入這些vi或程式碼中。這麼做會因為多次換算時四捨五入的問題，
+    導致換算出一樣的array index，因此需要一些case structure來做判定與換算的輔助。
+
+    請特別注意，在這些相關的程式碼中，有一些while loop，是用來確保軟體不會顯示出不在波長軸校正陣列中的波長。iXon上波長軸的每一個pixel都代表一個波長，這是經過波長軸校正資料算出來的(見節\ref{section: z cali})，這些波長並會被儲存在一個陣列中，
+    有時前述的程式碼會換算出不再這個陣列中的波長，程式會以這些while loop來尋找陣列中與換算值最接近的波長，將其顯示在螢幕上。
+
     \begin{figure}
         \centering
         \includegraphics[width=\linewidth]{readmode.jpeg}
