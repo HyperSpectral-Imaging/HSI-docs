@@ -358,8 +358,19 @@
     
     \noindent 綜上所述，照明的設定可以說是在光源光譜的完整度(頻寬)與照明範圍中做取捨，我們最後決定採取\ref{section: illuOriginal}節中的設定方式，
     雖然照明最後所得的影像會在上下有明顯的暗帶，但情形不算特別嚴重，且可以透過軟體進行後期處裡。若為了排除下上較暗的問題，而採取\ref{illuDark}的設定方式，形同於浪費了LDLS光源系統多數的光譜頻段，
-    相形之下比上下的邊緣暗帶是更為嚴重問題，且也與我們因為需要更高頻寬的白光，而使用LDLS的初衷背道而馳。
+    相形之下比上下的邊緣暗帶是更為嚴重問題，且也與我們因為需要更高頻寬的白光而使用LDLS的初衷背道而馳。
     \section{電動載台的操控}
+    \subsection{初始校正}
+    在開始進行開發前，首先以xx模式讓stage進行origin return，接著讓stage移動50000個pulse(在division number為1下，代表五公分)，將此點設為座標0，並把正負49000設為電動載台控制器的
+    software limit。經過測試，在這個範圍內電動逮台都能正常移動。
+    \subsection{原點復歸}
+    init檔中Origin參數，紀錄的是目前的載台座標0點到mechanical limit的距離，這個mechanical limit是以xx mode執行origin return後找到的mechanical limit。
+    當使用者每次按下「set home」後，軟體會自動將目前所在的座標值與Origin參數相加，存為新的Origin參數，寫入init檔中。接著再把目前位置設為座標0點，完成set home程序。
+    此時Origin參數紀錄的是新的座標0點，也就是目前所在位置，與mechanical limit的距離。
+
+    當使用者按下go home後，系統首先會以xx mode執行origin return，接著移動到Origin參數所描述的距離，接著把該位置設為座標0點。如果你在操作過中，不小心關閉了stage controller的電源，會導致controller重設
+    座標0點，此時只要執行go home，就能確保載台再次回到使用者透過set home所設定的座標0點。如果使用者一切的操作都正常，沒有在使用過程中關閉controller電源，都是在關閉軟體後才關閉電源，
+    則載台的座標理應不會被重設，因為軟體的關閉流程中包括將載台移動到座標0點。使用者在操作過程中，如只是要將載台移動到座標0點，僅須透過普通的move left/right與可調的pulse數量即可輕易達成。
     \section{第二階段: 軟體}
     本階段的軟體開發主要集中在掃描功能的優化與完善。
     \subsection{使用者介面與功能}
