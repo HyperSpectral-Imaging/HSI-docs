@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.10) (preloaded format=xelatex 2021.10.16)  16 FEB 2022 23:05
+This is XeTeX, Version 3.141592653-2.6-0.999993 (MiKTeX 21.10) (preloaded format=xelatex 2021.10.16)  17 FEB 2022 12:05
 entering extended mode
 **"c:/Users/bence/Desktop/Photonic workshop/report/report.tex"
 (c:/Users/bence/Desktop/Photonic workshop/report/report.tex
@@ -945,11 +945,11 @@ File: ./images//imagesize.jpg Graphic file (type bmp)
 <./images//imagesize.jpg>
 File: ./images//PXL_20210723_094307842.jpg Graphic file (type bmp)
 <./images//PXL_20210723_094307842.jpg>
+ [4]
 File: ./images//PXL_20210507_105656554.jpg Graphic file (type bmp)
 <./images//PXL_20210507_105656554.jpg>
 File: ./images//0423withoutobf.jpg Graphic file (type bmp)
 <./images//0423withoutobf.jpg>
- [4]
 File: ./images//focusPatern.png Graphic file (type bmp)
 <./images//focusPatern.png>
 
@@ -969,9 +969,10 @@ File: ./images//PXL_20210723_094341395.jpg Graphic file (type bmp)
 [5]
 File: ./images//hsi_from_object_to_cube.jpg Graphic file (type bmp)
 <./images//hsi_from_object_to_cube.jpg>
+ [6]
 File: ./images//lineSpectrum1213LDLS.png Graphic file (type bmp)
 <./images//lineSpectrum1213LDLS.png>
- [6] [7] [8]
+ [7] [8]
 File: ./images//patternColor.jpg Graphic file (type bmp)
 <./images//patternColor.jpg>
  [9] [10]
@@ -1012,41 +1013,36 @@ File: ./images//acquire.jpeg Graphic file (type bmp)
 <./images//acquire.jpeg>
 File: ./images//scanning.jpeg Graphic file (type bmp)
 <./images//scanning.jpeg>
+
+[21]
 File: ./images//roi.jpeg Graphic file (type bmp)
 <./images//roi.jpeg>
-
-[21] [22] [23]
+ [22] [23]
 File: ./images//reflection.jpeg Graphic file (type bmp)
 <./images//reflection.jpeg>
  [24] [25] [26]
 
-LaTeX Warning: Citation 'ixonManual' on page 27 undefined on input line 483.
+LaTeX Warning: Citation 'ixonManual' on page 27 undefined on input line 487.
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 485.
+               Default added (so using `tbp') on input line 489.
 
-[27] [28] [29]
+[27] [28] [29] [30]
 File: ./images//detectHW.jpeg Graphic file (type bmp)
 <./images//detectHW.jpeg>
- [30] [31] [32]
+ [31] [32] [33]
 File: ./images//readmode.jpeg Graphic file (type bmp)
 <./images//readmode.jpeg>
- [33] [34] (report.aux)
+ [34] (report.aux)
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-
-Package rerunfilecheck Warning: File `report.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `report.out':
-(rerunfilecheck)             Before: B8E326D93B3E75107343F6900BD1C5A1;4325
-(rerunfilecheck)             After:  EBDBB3792B1F94BA24CE3BE966E5563A;4505.
+Package rerunfilecheck Info: File `report.out' has not changed.
+(rerunfilecheck)             Checksum: EBDBB3792B1F94BA24CE3BE966E5563A;4505.
 
 Package biblatex Warning: Please (re)run Biber on the file:
 (biblatex)                report
@@ -1057,10 +1053,10 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 21405 strings out of 411295
- 431453 string characters out of 2831840
- 1255516 words of memory out of 3000000
- 41514 multiletter control sequences out of 15000+600000
+ 21406 strings out of 411295
+ 431464 string characters out of 2831840
+ 1258721 words of memory out of 3000000
+ 41515 multiletter control sequences out of 15000+600000
  410571 words of font info for 115 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  87i,11n,95p,789b,1353s stack positions out of 5000i,500n,10000p,200000b,80000s
