@@ -1,0 +1,48 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper, total={15cm,25cm}]{geometry}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{float}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage{fancyhdr}
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+\fancyhead[L]{HSI使用說明書}
+\fancyhead[R]{\rightmark}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{multirow}
+\graphicspath{ {./images/} }
+\usepackage[backend=biber, citestyle=numeric, bibstyle=numeric, sorting=none]{biblatex}
+\addbibresource{ref.bib}
+\usepackage{mathspec}   %加這個就可以設定字體
+\usepackage{xeCJK}       %讓中英文字體分開設置
+\setCJKmainfont{Noto Serif CJK TC} %設定中文為系統上的字型
+\newCJKfontfamily[chineseSans]\CJKsans{Noto Sans CJK TC}
+\setmainfont{Roboto Serif}
+\setsansfont{Roboto}
+\setmonofont{Roboto Mono}
+\XeTeXlinebreaklocale "zh"             %這兩行一定要加，中文才能自動換行
+\XeTeXlinebreakskip = 0pt plus 1pt     %這兩行一定要加，中文才能自動換行
+\renewcommand{\baselinestretch}{1.35}
+\renewcommand{\figurename}{圖}
+\renewcommand{\tablename}{表}
+\renewcommand{\abstractname}{摘要}
+\renewcommand{\contentsname}{目錄}
+\renewcommand{\listtablename}{表格目錄}
+%\renewcommand*{\bibfont}{\footnotesize}
+\titleformat*{\section}{\Large \bfseries}
+\titleformat*{\subsection}{\large \bfseries}
+\titleformat*{\subsubsection}{\bfseries}
+
+\begin{document}
+    \noindent{\Large HyperSpectral Imaging System}\newline
+    {\large 軟體操作使用說明書}\newpage
+    \tableofcontents\newpage
+    \section{啟動軟體}
+    本軟體尚未編譯為可執行檔，請開啟並執行HIS.lvproj中的main.vi，即可啟動軟體。軟體啟動時，會自動偵測是否能成功連接iXon相機，若連接失敗，系統判定並未連接iXon，則軟體會出現訊息視窗，
+    並自動進入讀取模式。
+    
+    一旦軟體啟動，並成功連接iXon，系統即會自動開啟iXon的TE Cooler，此時使用者即可自行輸入欲達到的溫度，待系統完成降溫且溫度穩定後，Cooler燈號才會轉為綠色。
+
+\end{document}
