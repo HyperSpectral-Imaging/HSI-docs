@@ -612,5 +612,16 @@
         \item \textbf{OM Camera Switch}: 本系統初期是使用Mightex小型相機作為OM影像的感測器，但由於其感測器尺寸比影像還小，限制了ROI功能的視野，因此後期換做Canon M200來做為OM相機，
         並以其來實作ROI功能。原初規劃要讓軟體能透過init檔在兩種相機中切換，但由於ROI功能所需的影像裁切功能參數，初期並未實現於Mightex相機的程式碼中。原本只是將兩套形式相同，但用於不同廠牌相機的程式已case structure切換，
         但由於ROI功能完成後基本上已不適用Mightex相機，因此原本的mightex程式碼就已Disabled diagram的方式續存於主程式中。若將這些diagram重新enable，理論上就可切換至mightex OM模式，但其對ROI功能的使用尚待調整。
+        \item \textbf{背景/參考光譜影像參數}: 系統預設以當前的設定進行任何影像擷取，換句話說，當使用者按下take background或take reference時，系統是以當下的影像參數進行擷取，
+        當使用者開始進行掃描時，系統也是已開始掃描的影像參數進行擷取，這可能造成背景/參考光譜與掃描影像以不同的參數拍攝的問題。未強制系統以相同參數擷取這些影像的原因是，有時可以影像參數來彌補背景/參考光譜拍攝情形的不完善，例如在較差的反射面上擷取參考光譜時。
+        不過系統理應至少要在掃苗前出現警示訊息提醒使用者正要以不同的參數進行掃描。
+        \item \textbf{增益類型並未儲存於檔案中}: 系統共有EM Gain與Convensional Gain兩種增益方式，但在最終tiff影像檔中只會儲存增益值而非增益類型。
+        \item \textbf{Window resize}: 系統介面視窗無法調整大小，在不同尺寸與解析度的螢幕上的介面尺寸也未知。
+        \item \textbf{影像檢索位置}: 在讀取模式進行影像資料檢索時，若在右側螢幕以滑鼠點選到某一位置，再到左側螢幕用滑鼠點選到同樣的Y位置，並觀測horizontal line profile，理論上應在左右兩個waveform graph應該觀測到一樣的光譜，
+        但實際上卻會是不同的光譜。這是因為點選位置換算為array index的過程中，四捨五入的問題。若使以鍵盤輸入的方式，在左右兩側的Y值都輸入一樣的數值，則就不會出現這樣的問題，會顯示出一樣的光譜。
+        \item \textbf{影像檢索位置極限}: 理論上，掃描影像在空間y軸的解析度受到scan step限制，使用者點選時所顯示的y軸數值應該以scan step為最小變動單位，但目前系統仍是直接將點選位置換算為y軸位置，沒有考慮最小單位的問題。
+        \item \textbf{為儲存ROI參考OM影像}: 初期開發時實驗室Analyser並不支援全彩的OM影像作為ROI reference image，到了後期已經支援將這樣的圖片存入ULS TIFF中，但考量實務上本系統掃描的範圍多數時候遠大於OM影像的視野，
+        儲存OM reference image並不是很實用，因此尚未加入這部分的功能。
     \end{enumerate}
+    \printbibliography
 \end{document}
