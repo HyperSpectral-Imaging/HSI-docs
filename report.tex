@@ -620,7 +620,7 @@
         \item \textbf{影像檢索位置}: 在讀取模式進行影像資料檢索時，若在右側螢幕以滑鼠點選到某一位置，再到左側螢幕用滑鼠點選到同樣的Y位置，並觀測horizontal line profile，理論上應在左右兩個waveform graph應該觀測到一樣的光譜，
         但實際上卻會是不同的光譜。這是因為點選位置換算為array index的過程中，四捨五入的問題。若使以鍵盤輸入的方式，在左右兩側的Y值都輸入一樣的數值，則就不會出現這樣的問題，會顯示出一樣的光譜。
         \item \textbf{影像檢索位置極限}: 理論上，掃描影像在空間y軸的解析度受到scan step限制，使用者點選時所顯示的y軸數值應該以scan step為最小變動單位，但目前系統仍是直接將點選位置換算為y軸位置，沒有考慮最小單位的問題。
-        \item \textbf{為儲存ROI參考OM影像}: 初期開發時實驗室Analyser並不支援全彩的OM影像作為ROI reference image，到了後期已經支援將這樣的圖片存入ULS TIFF中，但考量實務上本系統掃描的範圍多數時候遠大於OM影像的視野，
+        \item \textbf{未儲存ROI參考OM影像}: 初期開發時實驗室Analyser並不支援全彩的OM影像作為ROI reference image，到了後期已經支援將這樣的圖片存入ULS TIFF中，但考量實務上本系統掃描的範圍多數時候遠大於OM影像的視野，
         儲存OM reference image並不是很實用，因此尚未加入這部分的功能。
     \end{enumerate}
     \printbibliography
