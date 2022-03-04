@@ -1,0 +1,70 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper, total={15cm,25cm}]{geometry}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{float}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+%\usepackage{fancyhdr}
+%\setlength{\headheight}{15pt}
+%\pagestyle{empty}
+%\fancyhead[L]{110-1 Bio-MEMS Fabrication Homework}
+%\fancyhead[R]{鄭泊聲 b07611002}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{multirow}
+\graphicspath{ {./images/} }
+\usepackage[backend=biber, citestyle=numeric, bibstyle=numeric, sorting=none]{biblatex}
+\addbibresource{ref.bib}
+\usepackage{mathspec}   %加這個就可以設定字體
+\usepackage{xeCJK}       %讓中英文字體分開設置
+\setCJKmainfont{標楷體} %設定中文為系統上的字型
+\newCJKfontfamily[chineseSans]\CJKsans{Noto Sans CJK TC}
+\setmainfont{Roboto Serif}
+\setsansfont{IBM Plex Sans}
+\setmonofont{Roboto Mono}
+\XeTeXlinebreaklocale "zh"             %這兩行一定要加，中文才能自動換行
+\XeTeXlinebreakskip = 0pt plus 1pt     %這兩行一定要加，中文才能自動換行
+\renewcommand{\baselinestretch}{1.35}
+\renewcommand{\figurename}{圖}
+\renewcommand{\tablename}{表}
+\renewcommand{\abstractname}{摘要}
+\renewcommand{\contentsname}{目錄}
+\renewcommand{\listtablename}{表格目錄}
+%\renewcommand*{\bibfont}{\footnotesize}
+\titleformat*{\section}{\Large \bfseries \CJKsans}
+\titleformat*{\subsection}{\large \bfseries \CJKsans}
+\titleformat*{\subsubsection}{\bfseries \CJKsans}
+%\setcounter{tocdepth}{2}
+
+\title{研發新穎線掃描高光譜顯微影像技術}
+\author{鄭泊聲\thanks{國立臺灣大學經濟系大學部}
+\and 指導教授:張玉明\thanks{國立臺灣大學凝態科學研究中心特聘研究員}}
+\date{\today}
+
+\begin{document}
+    \maketitle
+    \begin{abstract}
+        以「線掃描」技術，大
+幅提升光譜掃描的速度。
+透過一個特殊的線光譜儀，搭配二維的影像感測
+器，能在一次影像的擷取時就對樣品的「一條線」
+進行光譜展開，有別於傳統光譜掃描一次對「一
+個點」進行展開，本系統只需要將樣品做單軸的
+移動，就可以掃描出樣品在二維空間的光譜分布。適合大尺寸樣品的光譜掃描，能大幅降低掃描所需的時間。目前本系統能夠對樣品在白光照射下的反
+射光譜，以及雷射所激發的螢光光譜進行掃描
+    \end{abstract}
+    \section*{致謝}
+    特別感謝張玉明老師將本系統的開發交付給我，並在過程中給予無私的支持與指導。
+    本系統開發承蒙科技部110學年度大專學生參與專題研究計畫
+支持(計畫編號110-2813-C-002-218-M)，另感謝實驗室的陳
+維良博士、黎文鴻博士帶我了解光學系統的基礎知識，羅詔元博士在LabVIEW程式撰寫給予許多指導，及黃鈺淳在研發過程中鼎力
+協助。
+    \section{前言與研究目的}
+    \section{文獻回顧與原理探討}
+    \section{研究方法}
+    \section{第一階段: 技術驗證}
+    \section{第二階段: 系統開發}
+    \section{第三階段: 功能優化}
+    \section{研究結果}
+    \section{未來展望}
+\end{document}
