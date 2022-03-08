@@ -164,7 +164,7 @@
 \subsubsection{巨觀用系統硬體}
 \begin{figure}
     \centering
-    \includegraphics[width = 0.75\linewidth]{lightPath.jpg}
+    \includegraphics[width = 0.9\linewidth]{lightPath.jpg}
     \caption{巨觀系統光路圖}
 \end{figure}
 第一階段系統是為了在巨觀尺度下觀測實域影像而設計，在本計畫中也是作為概念驗證與軟體開發的雛型。
@@ -273,7 +273,7 @@ Tiff檔案大致可分為兩部分，前半部分儲存的是檔案中每一張�
 \subsection{第二階段: 系統開發}
 \begin{figure}
     \centering
-    \includegraphics[width = 0.75\linewidth]{lightPath2.jpg}
+    \includegraphics[width = 0.9\linewidth]{lightPath2.jpg}
     \caption{微觀系統光路圖}
 \end{figure}
 第二階段的系統，主要目的在於將同樣的線掃描技術，應用於微觀尺度，硬體上的變更，首要就是將原本第一階段所採用的23mm camera lens，置換成一具簡單的光學顯微鏡。我們採用了Olympus 的10x顯微物鏡，
@@ -594,12 +594,57 @@ background.vi與reference.vi中。由於背景/參考光譜的校準是在dataCu
 \subsection{各種光譜量測實例}
 \subsubsection{螢光光譜}
 \subsubsection{反射光譜}
+\subsubsection{OBF Revisited}
 \subsection{背焦面影像的探討}
 \begin{figure}
     \centering
-    \includegraphics[width = 0.75\linewidth]{lightPath3.jpg}
+    \includegraphics[width = 0.9\linewidth]{lightPath3.jpg}
     \caption{背焦面影像系統光路圖}
+    \label{fig: bfp path}
 \end{figure}
+本系統奠基在平行光照明、掃描迅速，且具有完整反射光譜觀測功能等特性上，非常適宜結合背焦面影像的觀測技術，作為新穎材料表面特性的量測工具。
+至此，本系統已具備高光譜掃描所必需的硬體架構與軟體功能，原則上僅需將原系統線光譜儀入射狹縫上的顯微影像，改換為樣品的背焦面影像，即具備背焦面影像的高光譜量測能力。
+不過這樣的光學系統置換，實際上仍要面對許多問題，本研究中用於背焦面影像的光學系統，如圖\ref{fig: bfp path}所示，其與原先在節\ref{momentum}中設想者，有以下不同之處:
+首先，由於原本的雙光源雙成像顯微影像系統，已將光學載板的空間大致用盡，我們希望能在不影響原系統的情形下先對背焦面影像的成像進行研究，因此未將原系統進行升級，
+而是另組一部具有基礎觀測能力的顯微影像系統來使用。另外，原先設想背焦面影像系統能在背焦面影像與實域影像的觀測之間進行切換，但在系統開發的過程中，
+我們發現在系統上以另一部相機同時觀測實域影像，以方便使用者對找尋欲觀測的樣品特徵，比背焦面/實域影像的切換功能較為實用，因此背焦面影像的觀測系統，
+採用了與顯微影像觀測系統類似的雙成像架構，在圖\ref{fig: bfp path}中可以看到，兩部相機搭配不同焦距的成像鏡與成像位置，
+經過數次調整後，可以同時分別觀察實域影像與背焦面影像。
+
+為了方便對成像鏡與成像位置進行調整，我們以一部小巧的彩色CCD相機取代龐雜的線光譜儀+iXon影像系統，透過彩色CCD在可見光範圍附近的基礎光譜解析能力，
+先對背焦面影像進行初步的研究。圖\ref{fig: 300 bfp}呈現出300 grating在LED白光照明、40倍顯微物鏡下，於本系統所觀測到的背焦面影像，同時在系統上的另一部相機，
+則可以觀測到如圖\ref{fig: 300 real}的grating實域影像。關於grating的背焦面影像，則能以圖\ref{fig: 500 bfp}來相互瞭解比較。
+grating在白光照射下，會將同樣波長的光線以同樣的角度反射；而背焦面影像的主要性質，則是會將物鏡前同樣角度的入射光線，成像於同樣的位置(見節\ref{bfpimage})，
+因此，在grating的背焦面影像上，同樣波長的光線應會被成像於背焦面影像影像的同樣位置。圖\ref{fig: 500 bfp}與\ref{fig: 300 bfp}中皆可看見不同顏色(不同波長)的
+光線被成像在不同位置，而產生類似彩虹一般的顏色分布。透過兩圖之間的比較，也可以看見，由於不同波長的光線經500 grating反射後散開的角度會比300 grating來的更開，
+因此圖\ref{fig: 500 bfp}上不同顏色的位置分布區隔更明顯。另外，500 grating的各階干涉之間的距離也理應會比300 grating來的更遙遠，也可以透過兩圖的比較來驗證，
+圖\ref{fig: 300 bfp}中300 grating的各階干涉非常接近，導致有明顯的重疊。
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.85\linewidth]{300bfp.jpeg}
+    \caption{BFP of 300 grating}
+    \label{fig: 300 bfp}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.85\linewidth]{300real.jpeg}
+    \caption{Real space image of 300 grating}
+    \label{fig: 300 real}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.85\linewidth]{500bfp.jpeg}
+    \caption{BFP of 500 grating}
+    \label{fig: 500 bfp}
+\end{figure}
+
+透過上述的初步研究，已印證該光學系統具有基礎的背焦面影像觀測能力，若能將彩色CCD換回線光譜儀+iXon的影像系統，即能實線背焦面影像的高光譜影像量測，
+不過由於影像系統的轉移勢必牽涉大量參數的重新校正，且背焦面影像的線掃描尚有其他問題須待解決，礙於研究時間的限制，背焦面高光譜影像系統的整合須待由後續的研究者繼續開發，
+下章則會簡述該技術尚需克服的挑戰。
+
 \section{未來展望}
 \printbibliography
 \end{document}
