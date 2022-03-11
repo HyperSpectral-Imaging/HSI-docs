@@ -275,6 +275,7 @@ Tiff檔案大致可分為兩部分，前半部分儲存的是檔案中每一張�
     \centering
     \includegraphics[width = 0.9\linewidth]{lightPath2.jpg}
     \caption{微觀系統光路圖}
+    \label{fig: micro path}
 \end{figure}
 第二階段的系統，主要目的在於將同樣的線掃描技術，應用於微觀尺度，硬體上的變更，首要就是將原本第一階段所採用的23mm camera lens，置換成一具簡單的光學顯微鏡。我們採用了Olympus 的10x顯微物鏡，
 並搭配15 cm的tube lens，將放大過後的樣品影像成在分光儀的入射狹縫上，至於分光儀與iXon影像感測器的設置，則沒有不同。
@@ -591,9 +592,90 @@ background.vi與reference.vi中。由於背景/參考光譜的校準是在dataCu
 
 請特別注意，在這些相關的程式碼中，有一些while loop，是用來確保軟體不會顯示出不在波長軸校正陣列中的波長。iXon上波長軸的每一個pixel都代表一個波長，這是經過波長軸校正資料算出來的(見節\ref{section: z cali})，這些波長並會被儲存在一個陣列中，
 有時前述的程式碼會換算出不再這個陣列中的波長，程式會以這些while loop來尋找陣列中與換算值最接近的波長，將其顯示在螢幕上。
-\subsection{各種光譜量測實例}
+\subsection{光譜量測實例}
+以下說明本系統以不同照明方式進行掃描時，在影像瀏覽介面所能進行的各項觀測操作，我們以同樣的橘色螢光片+銅網樣品，分別進行雷射光源照明的螢光光譜觀測，
+以及高頻寬白光照明的反射光譜觀測，藉此印證系統的觀測能力與瀏覽功能。該螢光片樣品的結構，是在約$3.5mm^2$平方的橘色螢光片上，放上一個微小的銅網，銅網的正方形網格尺寸約為$127\mu m$。
 \subsubsection{螢光光譜}
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.9\linewidth]{flourence.jpeg}
+    \caption{雷射螢光光譜的觀測}
+    \label{fig: flourence}
+\end{figure}
+所謂螢光觀測，是以405nm雷射平行光照明樣品，激發橘色螢光片僅在600nm左右才有的螢光，並在系統的成像鏡前將反射的405nm雷射光濾除，因此最終觀測到的影像，在網格下的螢光片
+露出處，應觀測到集中於600nm左右的光譜，而在銅網格本身上，則因為銅網所反射的405nm雷射皆已被濾除，理應不會觀測到明顯的光譜特徵。
+
+在圖\ref{fig: flourence}中，右側螢幕上所點擊到的位置，如螢幕上垂直紅色虛線上的紅點所示，該處為上層的銅網網格本身，因此從右下方的光譜顯示幕上，確實不會看見集中於600nm的光譜。
+至於該螢幕上的紅色虛線處，與其上的紅點相同，都是隨著滑鼠點擊的位置移動，紅點是點擊位置，虛線則是紅點所在的掃描線，而該掃描線上的線掃描影像，則呈現在左側螢幕上。左側螢幕上，
+亦有一條紅色虛線，也是隨著滑鼠在左側螢幕的點擊位置移動，虛線上的每一個像素，就是對應到左下方光譜螢幕的橫軸座標，而左下方光譜螢幕的縱軸，就是每個像素的強度，換句話說，該光譜螢幕即是
+呈現出左側大螢幕上y=0.55處的光譜，也就是右側紅色虛線上y=0.55處的光譜。該處所在之處是露出的下層螢光片，因此左下光譜螢幕所呈現出的是一個集中在600nm處的光譜。
+
+在左側的大螢幕上，也可以看見，所有亮帶都集中在600nm附近，與螢光片受雷射激發後的螢光波長一致。
+
+由於本系統所儲存的影像資料符合正規的TIFF格式，訪間所有能夠讀取多層TIFF格式的影像瀏覽器，接能夠讀取本系統所擷取的影像。我們以免費、開源且普遍的ImageJ軟體，開啟一張同樣以雷射照明觀測本螢光片+銅網樣品的影像，
+輕易的就可以對該影像進行各項處哩，包括沿波長軸的影像平均、影像比例的校正，並將多層的影像轉存為更易於在不同軟體、裝置或書面進行呈現的單張JPEG檔。
+如圖\ref{fig: flourenceAvg}、\ref{fig: flourence628}、\ref{fig: flourence526}
+所示，展現出本系統掃描檔案的使用彈性與廣泛的相容性。
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.9\linewidth]{1211_10um_15msLaser-1.jpg}
+    \caption{平均過後的螢光高光譜影像，以 405nm 雷射激發。本照片的比例經過調整，以符合樣品實物。實際大小約
+    為 1.2×3.5mm，由 350 張單線光譜影像所接合而成}
+    \label{fig: flourenceAvg}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.9\linewidth]{1211_10um_15msLaser-1.jpg}
+    \caption{螢 光 的 高 光 譜 影 像， 僅 擷 取 約 在
+    628nm 下的樣品影像。}
+    \label{fig: flourence628}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.9\linewidth]{1211_10um_15msLaser.tiff137-1.jpg}
+    \caption{螢光的高光譜影像，僅擷取約在 526nm 下
+    的樣品影像，已經幾乎不可見。}
+    \label{fig: flourence526}
+\end{figure}
+
 \subsubsection{反射光譜}
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.9\linewidth]{reflection (2).jpeg}
+    \caption{反射光譜的觀測}
+    \label{fig: flourence}
+\end{figure}
+同樣的螢光片+銅網樣品，在高頻寬的白光照射下，銅網網格處應會完整反射光源的光譜，而螢光片露出處則會較集中反射在600nm處。不過由於白光照明的強度極強，原始的反射光譜較難判別出其差異，
+但本系統具有背景光譜與參考光譜的校準功能，能夠計算出樣品在每個位置與波長的反射率，更精確呈現出樣品的反射特徵。
+
+圖\ref{figure: reflection}中，右下方的光譜螢幕呈現出右側大螢幕上紅點位置的反射率，由於觀測位置(紅點)在銅網上，在各個波長處的反射率大致相同。而左下光譜螢幕則呈現出樣品在y=處
+，也就是螢光片露出處的反射率，可以看見其反射率在600nm處有明顯的提升，橘色螢光片在橘色波長處有較強的反射率，顯然是合理的觀測結果。
+
+若反射光譜未經過背景光譜與參考光譜的校準，由於照明光源相當亮，其在整個可觀測的光譜範圍，都會有明顯的訊號。圖\ref{fig: reflec628}、\ref{fig: reflec526}同樣是以ImageJ調整並擷取的圖片，極清楚呈現出射觀測的原始影像，在不同波長(無論大於或小於600nm)
+都有相當強的訊號，與螢光光譜僅集中在600nm處，或是反射光譜經背景/參考光譜校準後，在600nm有cutoff的特徵，都相當不同。
+
+透過圖\ref{figure: reflection}右側大螢幕的影像與圖\ref{fig: reflec628}、\ref{fig: reflec526}的比較，也可以發現經過參考光譜的校正後，不但反射率光譜不再存有照明光源的光譜特徵，
+照明在空間上的上下不均勻也改善許多。本系統的最終目標是用於背焦面影像的觀測，而背焦面影像的取得勢必得透過反射照明的方式，其亦是一種反射光譜的觀測，因此此處所呈現的反射光譜瀏覽能力對於背焦面影像的觀測相當重要。
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.9\linewidth]{1211_10um_10ms-1.jpg}
+    \caption{白 光 的 高 光 譜 影 像， 僅 擷 取 約 在
+    628nm 下的樣品影像。}
+    \label{fig: reflec628}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.9\linewidth]{1211_10um_10ms137-1.jpg}
+    \caption{白 光 的 高 光 譜 影 像， 僅 擷 取 約 在
+    526nm 下的樣品影像，仍然相當清楚。}
+    \label{fig: reflec526}
+\end{figure}
+
 \subsubsection{OBF Revisited}
 \subsection{背焦面影像的探討}
 \begin{figure}
@@ -646,5 +728,7 @@ grating在白光照射下，會將同樣波長的光線以同樣的角度反射�
 下章則會簡述該技術尚需克服的挑戰。
 
 \section{未來展望}
+
+
 \printbibliography
 \end{document}
