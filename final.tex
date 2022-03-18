@@ -12,6 +12,8 @@
 \usepackage{amsmath}
 \usepackage{latexsym}
 \usepackage{multirow}
+\usepackage{multicol}
+\usepackage{subcaption}
 \graphicspath{ {./images/} }
 \usepackage[backend=biber, citestyle=numeric, bibstyle=numeric, sorting=none]{biblatex}
 \addbibresource{ref.bib}
@@ -36,14 +38,16 @@
 \titleformat*{\subsection}{\large \bfseries \CJKsans}
 \titleformat*{\subsubsection}{\bfseries \CJKsans}
 \setcounter{tocdepth}{2}
+\setlength{\columnsep}{1cm}
 
 \title{研發新穎線掃描高光譜顯微影像技術}
-\author{鄭泊聲\thanks{國立臺灣大學經濟系大學部}
+\author{鄭泊聲\thanks{國立臺灣大學經濟系大學部。contact: b07611002@ntu.edu.tw}
 \and 指導教授:張玉明\thanks{國立臺灣大學凝態科學研究中心特聘研究員}}
 \date{\today}
 
 \begin{document}
 \maketitle
+\pagenumbering{roman}
 \section*{致謝}
 特別感謝張玉明老師將本系統的開發交付給我，並在過程中給予無私的支持與指導。
 本系統開發承蒙科技部110學年度大專學生參與專題研究計畫
@@ -55,15 +59,16 @@
 \tableofcontents
 \listoffigures
 \listoftables
+\pagenumbering{arabic}
 \section{前言與研究目的}
 傳統的光譜量測技術，
-在光譜儀中，被展開的樣品光譜多半以線性光譜(spectrum)呈現，記錄其在各個波長的訊號強度。對於由單一物質組成的均勻樣品，這樣的觀測方式相當有效率，
+在光譜儀中，被展開的樣品光譜多半以單點的線性光譜(spectrum)呈現，記錄其在各個波長的訊號強度。對於由單一物質組成的均勻樣品，這樣的觀測方式相當有效率，
 但觀測者若想了解樣品在不同位置上的光譜性質差異，則必須對樣品的每個位置分別進行光譜展開，才能建立出一張含有位置訊息的光譜影像(spectral image)
-。以最常見的二維掃描來說，必須沿著樣品座標軸上所設定的二維區域進行「面」的掃描，再透過後處理將每個位置的光譜資訊重新建立成一張二維平面的光譜影像。
+。
 
-而線掃描高光譜影像技術，則是將帶有一維空間位置訊息的光譜資訊進行展開，能夠大幅減少光譜影像掃描所需的掃描時間。舉例來說，在一個二維卡式座標中，傳統的雷射掃描共軛焦顯微鏡一次只能對
+而高光譜影像技術，則是將帶有一維空間位置訊息的光譜資訊進行展開，能夠大幅減少光譜影像掃描所需的掃描時間。舉例來說，在一個二維卡式座標中，傳統的雷射掃描共軛焦顯微鏡一次只能對
 「一個點」進行光譜展開，
-若要建立一張二維的光譜影像，就必須進行二維的「面掃描」；而線掃描高光譜影像技術，則是對樣品上的「一條線」，將線上每個點之光譜一次性展開，因此，
+若要建立一張二維的光譜影像，就必須進行二維的「面掃描」；而我們欲採用的線掃描高光譜影像技術，則是對樣品上的「一條線」，將線上每個點之光譜一次性展開，因此，
 只要沿著與這條「掃描線」的垂直方向進行一維掃描，就能快速地完成一張二維區域的光譜影像，如此可大幅提升顯微光譜影像的量測速率。
 
 本研究即旨在建立一部完整的線掃描顯微高光譜影像系統，以提升新穎材料與樣品微結構的觀測效率。整個系統的建構，包括以電動載台作為掃描裝置進行各式操控，以及二維影像感測器的操作，還有系統光路架構的設計與開發調整。
@@ -80,11 +85,11 @@
     \caption{線掃描高光譜影像的原理}
     \label{fromObjecttoCube}
 \end{figure}
-本系統所採用的線掃描(Line scan or Push-broom)影像原理，可以圖\ref{fromObjecttoCube}來說明。首先，系統中包含一個簡單的光學顯微鏡，能搭配不同倍率的顯微物鏡使用，該光學顯微鏡會將樣品的像成在一部線光譜儀的入射狹縫上(圖中的input slit)，
-樣品位置不同時，狹縫上的像也會不同。狹縫上的影像即對應到樣品的「掃描線」，而這部線光譜儀會同時對線上的每個位置進行光譜量測(圖中的dispersion示意)，共計512條光譜線會在影像感測器上形成一個二維影像，其Y軸就是與狹縫同向的空間座標，
+本系統所採用的線掃描(Line scan or Push-broom)高光譜影像原理，可以圖\ref{fromObjecttoCube}來說明。首先，系統中包含一個簡單的光學顯微鏡，能搭配不同倍率的顯微物鏡使用，該光學顯微鏡會將樣品的像成在一部線光譜儀的入射狹縫上(圖中的input slit)，
+樣品位置不同時，狹縫上的像也會不同。狹縫上的影像即對應到樣品的「掃描線」，而這部線光譜儀會同時對線上的每個位置進行光譜量測(圖中的dispersion示意)，數條光譜線會在影像感測器上形成一個二維影像，其Y軸就是與狹縫同向的空間座標，
 其X軸則是光譜的波長座標(即是圖中的on sensor image)。
 
-透過這樣的影像系統，我們從影像感測器上擷取一張二維影像(on sensor image)，就能得到樣品單線上512個不同位置的光譜，接著只要再對樣品進行單方向的移動掃描，就能將各處單線的光譜影像組合成一張完整的高光譜影像(Hyperspectral image)。
+透過這樣的影像系統，我們從影像感測器上擷取一張二維影像(on sensor image)，就能得到樣品單線上數個不同位置的光譜，接著只要再對樣品進行單方向的移動掃描，就能將各處單線的光譜影像組合成一張完整的高光譜影像(Hyperspectral image)。
 在本系統的設定下，將樣品沿著空間的x軸移動，擷取每個x座標上的線掃描影像後，透過軟體接合，即可得到整個樣品平面的光譜資訊。這樣的影像除了記錄樣品在二維空間的空間特徵外，也包含了每個空間位置的光譜特徵，因此實是一張三維的影像(Data cube)。
 
 \subsection{顯微高光譜影像的發展現況}
@@ -127,14 +132,6 @@
 即可在實域影像與動量域影像之間切換。
 但由於多數顯微物鏡的背焦面位在鏡筒中，無法直接在該處成像，因此本研究參酌其他文獻\cite{bfpimage}所描述的方式，
 透過加上另一片成像鏡，將原本的背焦面影像移動(relay)至易於成像的位置，如此才能在同一部影像感測器上切換實域與動量域的觀測。
-在圖\ref{path}中，樣品的發散光經物鏡後，透過L3透鏡匯聚於針孔處。在針孔後放置一個L4透鏡，與針孔的距離正好是L4的焦距，此時針孔處的影像就相當於是L4的待測物，
-若將光譜儀或CCD放置於L4的背焦面，即可觀測樣品的動量域影像；若在L4後方加上另一成像鏡L5，則可在L5的焦點觀測到實域影像。
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\linewidth]{bfppath.jpg}
-    \caption{動量域影像的成像光路參考\cite{bfpimage}}
-    \label{path}
-\end{figure}
 
 在背焦面影像的領域，則多半以應用於微結構與光線散射分布的研究為主。例如以背焦面影像觀測電漿子的研究，
 或是光子晶體相關的研究\cite{hartmann2013radiation,zhang2014back,wagner2012back}。
@@ -147,50 +144,35 @@
 本研究將整體系統開發分為以下三個階段，以求按部就班，從線掃描高光譜的基礎原理與技術開始，到更複雜的顯微影像光路整合，最後進入更完善的光譜影像瀏覽、
 分析功能，與背焦面影像技術的開發。
 \subsection{第一階段: 巨觀實域觀測} \label{macroreal}
-本階段的目標是了解線掃描高光譜影像技術的基礎原理，採較單純的光路規劃，亦是最常見的高光譜影像技術系統，將用於尺寸在公分等級的樣品之實域觀測，系統將採用外部線光源的方式照明，
-以電動載台移動樣品進行掃描，且使用廣角焦距的物鏡搭配線光譜儀，觀測樣品的反射光譜影像。
+最為研究前期的技術驗證，本階段的目標是了解線掃描高光譜影像技術的基礎原理，採較單純的光路規劃
+以電動載台移動樣品進行掃描，且使用廣角焦距的物鏡搭配線光譜儀，觀測樣品的反射光譜影像。，將用於尺寸在公分等級的樣品之實域觀測，系統將採用外部線光源的方式照明，亦是最常見的高光譜影像技術系統，
 
 在這階段，我們希望可以透過本系統更深入了解高光譜影像對光源的要求，
 例如: 是否一定必須使用線光源?光源需涵蓋的光譜範圍必須多大?強度必須多強?
-各個光學元件的NA匹配、是否需要合適的濾波、如何節省所需的空間與元件數量等，也都是開發本子系統的過程中希望習得的知識與經驗。
+是否需要合適的濾波、如何節省所需的空間與元件數量等，也都是開發本子系統的過程中希望習得的知識與經驗。
 
-另外，在本階段的軟體開發部分，主要重點將是後端軟體中系統硬體操控、掃描影像接合、矩陣運算等基礎項目。
+另外，在本階段的軟體開發部分，主要重點將是後端軟體中系統硬體操控、掃描影像接合、矩陣運算等系統整合的後端基礎項目。
 \subsection{第二階段: 微觀實域觀測} \label{microreal}
-本階段開發之系統的主要應用場域是微米等級樣品的實域觀測，因此將原本使用的廣角物鏡改為一套顯微鏡系統，並將載台掃描改為galvo掃描，與線掃描高光譜影像系統整合，兩套系統之間的整合問題可能是本階段最大的挑戰。
+本階段將開發本研究最核心的軟、硬體系統，主要應用場域是微米等級樣品的實域觀測，因此將原本使用的廣角物鏡改為一套顯微鏡系統，並將載台掃描改為galvo掃描，與線掃描高光譜影像系統整合。
 
-傳統顯微物鏡的NA、景深、各波段穿透率、成像圈\ldots 等規格，是否能和符合高光譜影像之需求，是本子系統開發的重點項目。
-如何操控雷射、同步galvo掃描、如何確保樣品上每個位置的光線皆能同步精確量測、如何實作線掃描等，都是本系統所必須完成的目標。
+傳統顯微鏡的各項規格，是否能符合高光譜影像之需求，是本子系統開發的重點項目。
+如何操控雷射、同步galvo掃描、如何確保樣品上每個位置的光線皆能同步精確量測、如何實作線掃描等，都是本階段所必須完成的目標。
 
 在軟體部分，本階段最重要的目標是前端介面的開發，由於整個系統的使用者操作都將以軟體介面達成，將操作介面設計的直觀易用，並提供各種光譜量測所需的功能，非常重要。本階段所開發的軟體及硬體，將延用至第三階段繼續精進，
 
 \subsection{第三階段: 動量域觀測} \label{momentum}
-本階段我們將在第二套子系統的光路中加入可進行動量域影像的量測功能，因應這樣的研究需求，我們相信在光路的設計規劃上勢必更加複雜。
+我們將在第二階段系統的光路中加入可進行動量域影像的量測功能，因應這樣的研究需求，我們相信在光路的設計規劃上勢必更加複雜。
 如何設計出能在實域觀測與動量域觀測之間切換的光路，是本系統的主要目標與挑戰。有效地建立能夠在背焦面實作雷射共軛焦顯微高光譜影像的系統後，
 本計畫規劃的光學系統即告完備。
 \footnote{惟動量域的光譜分析屬高等研究領域，本計畫的研究目標僅設定在於光學系統與量測技術的建立，研究樣品的背焦面光譜影像分析將不在本計畫的研究範疇。}
 
-同時，本階段的軟體開發，除了演算能力、操作介面的持續精進外，高光譜影像的瀏覽、分析功能，對於包括背焦面影像在內的各種光譜觀測方式極其重要，將是本階段軟體開發的重點。
+同時，本階段的軟體開發，除了演算能力、操作介面等的持續精進外，高光譜影像的瀏覽、分析功能，對於包括背焦面影像在內的各種光譜觀測方式極其重要，將是本階段軟體開發的重點。
 
-\subsection{軟體開發} \label{software}
-本研究的軟體系統，主要功能在於線掃描高光譜影像擷取與分析功能的建立，相較於傳統雷射掃描方式，高光譜影像一次須處裡的資料更龐大，軟體系統必須有效地進行資料擷取與分析。另外，如何計算不同物鏡下分光儀不同的空間解析度，
-並在CCD上的合適範圍讀取資料進行影像拼接，也是軟體系統開發的關鍵問題。
-除此之外，掃描元件的控制、影像的截取與呈現、CCD的同步控制、使用者介面的建立等，亦是軟體開發的範疇。影像資料分析功能的建立，更是軟體開發後期的主要任務，尤其面對不同觀測域的影像，分析功能的內容勢必更加複雜。
-我們將採用LabVIEW來開發操作介面(GUI)及應用程式主體，並以C++實作動態含式庫(.dll)輔助後台的影像處理及資料流。
-
-\section{研究結果與討論}
-\subsection{第一階段: 技術驗證}
-\subsubsection{巨觀用系統硬體}
-\begin{figure}
-    \centering
-    \includegraphics[width = 0.9\linewidth]{lightPath.jpg}
-    \caption{巨觀系統光路圖}
-\end{figure}
-第一階段系統是為了在巨觀尺度下觀測實域影像而設計，在本計畫中也是作為概念驗證與軟體開發的雛型。
-在這個階段中，整個系統主要由以下幾個部建構成:
+\subsection{線掃描高光譜影像核心硬體}
+本研究中最重要的核心硬體，就是可以將狹縫上的掃描線一次做光譜展開的線光譜儀，以及用來接收其二維線掃描影像的影像感測器。這兩個組件無論在第一、二、三階段部是最關鍵的影像核心，我們所採用的線光譜儀影像感測器的更像規格，大致如下列:
 \begin{enumerate}
     \item Specim V10E 線光譜儀
           \begin{itemize}
-              \item 搭配 Specim OLE 23(mm) 物鏡
               \item 光譜範圍: 400-1000 $nm$
               \item 入射狹縫寬: 30 $\mu m$
               \item 成像尺寸: Image size: $6.15(spectral) \times 14.2 mm$
@@ -202,68 +184,76 @@
               \item TE cooler
               \item Electron Multiplying gain
           \end{itemize}
-    \item Suruga Seiki 電動載台
-          \begin{itemize}
-              \item 搭配 D120 控制器
-          \end{itemize}
 \end{enumerate}
 由於V10E線光譜儀的成像尺寸與iXon的正方形CCD尺寸並不同，因此當兩部儀器接合使用後，有部分的像是我們無法觀測到的，如圖\ref{figure: image size}所示，
 我們將能在系統中能到看到V10E的整個光譜範圍，但觀測物的Y軸方向，卻因為iXon CCD的高度較小，因此無法完整觀測。
 
-\begin{figure}[t]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{imagesize.jpg}
     \caption{Image size when combined}
     \label{figure: image size}
 \end{figure}
 
-\begin{figure}[t]
+\subsection{軟體開發} \label{software}
+本研究的軟體系統，主要功能在於線掃描高光譜影像擷取與分析功能的建立，相較於傳統雷射掃描方式，高光譜影像一次須處裡的資料更龐大，軟體系統必須有效地進行資料擷取與分析。另外，如何計算不同物鏡下分光儀不同的空間解析度，
+並在影像感測器上的合適範圍讀取資料進行影像拼接，也是軟體系統開發的關鍵問題。
+除此之外，掃描元件的控制、影像的截取與呈現、影像感測器的同步控制、使用者介面的建立等，亦是軟體開發的範疇。影像資料分析功能的建立，更是軟體開發後期的主要任務，尤其面對不同觀測域的影像，分析功能的內容勢必更加複雜。
+我們將採用LabVIEW來開發操作介面(GUI)及應用程式主體，並以C++實作動態含式庫(.dll)輔助後台的影像處理及資料流。
+
+\section{研究結果與討論}
+\subsection{第一階段: 技術驗證}
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.9\linewidth]{lightPath.jpg}
+    \caption{巨觀系統光路圖}
+    \label{fig: macro path}
+\end{figure}
+第一階段系統是為了在巨觀尺度下觀測實域影像而設計，在本計畫中也是作為概念驗證與軟體開發的雛型。系統的光路圖如圖\ref{fig: macro path}所示，其實就是線光譜儀+感測器的影像核心，前端再加上一個焦距23 mm的掃描用廣角物鏡。而物鏡前的樣品其實是放置在一個電動載台上，透過電動載台移動樣品，來達成在樣品上不同位置進行拍攝的掃描過程。
+
+圖\ref{figure: 1 stage setup}呈現出第一階段系統的樣貌，在照片中另外可以看到LED光源，從外部的黑色手電筒照射觀測物。
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.65\linewidth]{PXL_20210723_094307842.jpg}
     \caption{Stage, spectrograph, ccd}
     \label{figure: 1 stage setup}
 \end{figure}
 
-圖\ref{figure: 1 stage setup}呈現出第一階段系統的樣貌，在照片中另外可以看到LED光源，從外部的黑色手電筒照射觀測物。
-\subsubsection{Order Blocking Filter}
+\subsubsection{Order Blocking Filter} \label{sec: OBF}
 由於Specim V10E的前玉為一狹縫，光線進入後，理應會發生單狹縫干涉，產生二階影像(Second order image)，因此Specim系統中尚須搭配一個
 二階濾鏡(Order Blocking Filer)，根據原廠的說明書，該濾鏡可以C-Mount安裝，或是直接黏貼在影像感測器上，不論以何種方式安裝，
 皆須盡量靠近影像感測器，實務上與影像感測器不宜超過6mm的距離\cite{manual}。
-\begin{figure}[t]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{PXL_20210723_094341395.jpg}
     \caption{The order blocking filter.}
     \label{figure: obf}
 \end{figure}
-觀察該濾鏡的外觀，可發現其阻擋二階干涉影像的方式，應該就是在鏡面上二階影像出現的位置鍍上塗層進行濾波。由於我們的系統內，不宜將濾鏡直接黏貼在昂貴的iXon EMCCD上，
-原本希望以C-mount方式安裝，但可行的安裝位置與影像感測器的距離都會超過6mm，就算客制專用的c-mount轉接環，仍至少會有約9.55mm左右的距離，我們擔心這樣反而會造成該濾鏡阻擋到原初的一階影像，
-因此最後決定先不安裝該濾鏡，待過後再來檢視二階影像的影響。事實上，在本系統的往後開發過程中，皆沒有在任何影像中看到二階干涉的影響，
-不過這或許一方面是由於我們未曾使用超過30ms的曝光時間，在更長的曝光時間下，二階干涉是否會造成影響，值得後人加以深究。
+觀察該濾鏡的外觀，可發現其阻擋二階干涉影像的方式，應該就是在鏡面上二階影像出現的位置鍍上塗層進行濾波。由於我們的系統內，無論如何安裝，OBF與iXon CCD仍至少會有約9.55mm左右的距離，我們擔心這樣反而會造成該濾鏡上的塗層阻擋到原初的一階影像，
+因此最後決定先不安裝該濾鏡，待過後再來檢視二階影像的影響。
 
 \subsection{後端軟體基礎}
 \subsubsection{三維影像的建立}
-本系統所採用的線掃描 (Line scan or Push-broom) 影像原理，就如圖\ref{fromObjecttoCube}所示，系統在拍攝時，實際上從iXon EMCCD上擷取的On sensor image，如圖\ref{figure: linespectrum}所示，其縱軸與分光儀的狹縫同方向，因此也是代表樣品的空間縱軸，
-至於影像的橫軸刻度，則是代表不同波長。換句話說，在這張影像的每一個y位置，都有一條光譜線，在iXon EMCCD 512$\times$512像素的設定下，代表每一張on senson image
-上都有512個不同位置的光譜線。
 
 為了方便讀者了解三維影像的建立與接合，我們將圖\ref{fromObjecttoCube}重新繪製在圖\ref{fig: form data cube}，並加上第二個位置的線掃描影像(on sensor image)的成像過程，以及最終的三維影像data cube接合。
-所謂線掃描影像，就是單條掃描線上所拍攝得到的二維光譜影像，也就是線光譜儀在每個掃描位置時成在iXon上的像。
+所謂線掃描影像，或是on sensor image，就是單條掃描線上所拍攝得到的二維光譜影像，也就是線光譜儀在每個掃描位置時成在iXon上的像，就如圖\ref{figure: linespectrum}所示，其縱軸與分光儀的狹縫同方向，因此也是代表樣品的空間縱軸，
+至於影像的橫軸刻度，則是代表不同波長。換句話說，在這張影像的每一個y位置，都有一條光譜線，在iXon EMCCD 512$\times$512像素的設定下，代表每一張on senson image上都有512個不同位置的光譜線，且該光譜線是由512個像素所量測出來。
 
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{hsi_from_object_to_cube_twin.jpg}
-    \caption{三維影像的接合}
+    \caption[三維影像的接合]{三維影像的接合。本圖的上半部與圖\ref{fromObjecttoCube}相同，呈現出掃描線在樣品上其中一個位置時，線掃描影像的成像過程。本圖的下半部則繪製出掃描線在樣品上另一個位置時，如何得到一個不同的線掃描影像，以及最後將兩個不同位置的線掃描影像接合為data cube的示意。線掃描高光譜影像，就是如此一般拍攝樹張線掃描影像並接合。}
     \label{fig: form data cube}
 \end{figure}
 
 % 圖\ref{figure: linespectrum}是10x物鏡下，拍攝小型網格圖樣的影像，因此可以看見途中的亮帶與暗帶交錯。
 
-% \begin{figure}[t]
-%     \centering
-%     \includegraphics[width=0.5\linewidth]{lineSpectrum1213LDLS.png}
-%     \caption{網格的線掃描影像}
-%     \label{figure: linespectrum}
-% \end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{lineSpectrum1213LDLS.png}
+    \caption{網格的線掃描影像}
+    \label{figure: linespectrum}
+\end{figure}
 
 實際上進行掃描時，只要在樣品上不同位置的掃描線擷取影像，就能得知樣品上每個位置的光譜資訊。在本系統中，樣品放置於在一個電動載台上，我們透過電動載台來移動樣品，以在樣品的不同位置拍攝，
 每張線掃描影像皆是512$\times$512像素的二維影像。電動載台每次移動的距離，與總共要移動的距離(也就是掃描的範圍)，都是由使用者設定的。
@@ -280,30 +270,27 @@ Tiff檔案大致可分為兩部分，前半部分儲存的是檔案中每一張�
 
 檔案的後半部分，才是各張影像的實際資料。在我們的系統中，每個檔案一律都會包含512張不同波長下的影像，這些影像也各都會有自己的一組影像資料標籤，這512組影像資料標籤也是都儲存在前半部分。
 
-我們使用實驗室過去留下的公版tiff labview library來進行影像檔案的儲存與其中影像資料標籤的管理，在開發初期遇到該library內資料寫入檔案時，端序(byte order)不一致的問題，有些資料是以大端序(big endian)，
-寫入，有些是以小端序(little endian)寫入，為了配合實驗室Analyser軟體，我們最後一慮皆使用小段序寫入資料。另外，將data cobe寫入檔案時，若將三維矩陣直接寫入，會有array index倒置的問題，正確的寫入方式應該是以for迴圈依序將data cube內的單張影像一張一張寫入。
-
 \subsubsection{座標校正}
 當我們成功地建立起三維的影像data cube後，面臨的必要問題即是，要如何確認資料中三個座標軸的尺度?假設我們同樣將data cube的x,y兩軸分別指定為樣品的空間x軸、空間y軸，而z軸則指定為波長方向，
-並以一個三圍矩陣(array)的方式來描述與儲存data cube，那麼，座標校正的目的，就是要指定出這個三維矩陣x,y軸上每一個的array index，實際代表的位置，與z軸上每一個array index實際代表的波長。
+並以一個三維矩陣(array)的方式來描述與儲存data cube，那麼，座標校正的目的，就是要指定出這個三維矩陣x,y軸上每一個的array index，實際代表的位置，與z軸上每一個array index實際代表的波長。
 
-在此，我們假設線掃描系統的掃描線是空間中的y軸，則這代表掃描時電動載台上的樣品會沿著x軸移動，換句話說，x軸的座標是不需要另外校正的，其座標值以已知的電動載台移動距離即可得知。
-至於y軸的座標校正部分，我們只要觀測已知尺寸的樣品，就能得知線光譜儀的視野。在本階段，我們自行設計了一個校正與對焦用的圖樣作為樣品，圖\ref{fig: form data cube}中的樣品就是這個圖樣。
+在此，我們假設線掃描系統的掃描線是空間中的y軸，則這代表掃描時電動載台上的樣品會沿著x軸移動，換句話說，x軸的座標是不需要另外校正的，其座標值以操作者設定的電動載台移動距離即可得知。
+至於y軸的座標校正部分，我們只要觀測已知尺寸的樣品，就能得知線光譜儀的視野。在本階段，我們自行設計了一個校正與對焦用的圖樣作為樣品，圖\ref{fig: form data cube}中的樣品就是這個圖樣。而在第二階段的微觀尺度觀測系統，我我們則以已知尺寸的銅網網格作為樣品來量測視野。
 
 較複雜者是z軸的校正，我們將一個已知光譜的光源，照滿線光譜儀的入射狹縫，並在線掃描影像(on sensor image)上擷取其水平的line profile (接合前的單張線掃描影像，其水平軸實為光譜波長座標軸)，
 即可繪製出光源的觀測光譜，將這個觀測光譜與光源的已知光譜進行比較，找出其光譜上相似的特徵，紀錄觀測光譜上這些特徵的所在像素，並以這些像素點與已知的光譜特徵所在波長，以線性回歸方式計算其減量線，
 即可計算出z軸上每個像素所代表的實際波長。
 
-\begin{figure}[t]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{fitting.jpg}
-    \caption{以cal-2000進行校正}
+    \caption[以cal-2000進行光譜校正]{以cal-2000進行光譜校正。本圖呈現出cal-2000標準光源在本系統中的觀測光譜，與cal-2000的已知光譜比較後，我們找出幾個已知所在波長的光譜特徵，其波長標示在本圖下方。本圖上方則標示出這些特徵在iXon上的所在像素。}
     \label{figure: fitting}
 \end{figure}
-\begin{figure}[t]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{cal-2000fitting.jpg}
-    \caption[]{波長軸校正減量線\protect\footnotemark}
+    \caption{波長軸校正減量線}
     \label{figure: fit curve}
 \end{figure}
 
@@ -314,14 +301,12 @@ Tiff檔案大致可分為兩部分，前半部分儲存的是檔案中每一張�
     \caption{微觀系統光路圖}
     \label{fig: micro path}
 \end{figure}
-第二階段的系統，主要目的在於將同樣的線掃描技術，應用於微觀尺度，硬體上的變更，首要就是將原本第一階段所採用的OLE 23mm camera lens，置換成一具簡單的光學顯微鏡。我們採用了Olympus 的10x顯微物鏡，
-並搭配15 cm的tube lens (imaging lens)，將放大過後的樣品影像成在分光儀的入射狹縫上，至於縣線光譜儀與iXon影像感測器的設置，則沒有不同。
+第二階段的系統，主要目的在於將同樣的線掃描技術，應用於微觀尺度，硬體上的變更，可以從圖\ref{fig: micro path}首要就是將原本第一階段所採用的OLE 23mm camera lens，置換成一具簡單的光學顯微鏡。至於線光譜儀與iXon的影像核心設置，則沒有不同。
 
 除此之外，系統的照明方式也有改變。原初以外部照光的方式，對於所需照明範圍相對較小的顯微影像來說，會浪費較多光源，也不適合進行顯微雷射螢光等觀測，
 因此將照明方式改為內部照明，系統上有兩個光纖collimator，能夠彼此切換。光源經過tube lens (imaging lens)匯聚在物鏡的背焦面上，通過物鏡後變成平行光，以期照射在樣品上的光線最為均勻。
 
-裝設物鏡的鏡架，能夠上下移動以進行對焦，光源的tube lens也能微調位置。物鏡的tube lens雖然裝設在可調的鏡筒內，但不應任意移動。至於電動載臺的裝設與使用，則沒有不同。
-系統上另外再成像進入分光儀狹縫前，已一片半反射鏡將OM影像投至一臺Canon M200相機中，借助其APS-C尺寸的感光元件，能夠完整顯示出OM的視野，以幫助使用者尋找ROI。
+系統上另外在成像進入線光譜儀狹縫前，已一片半反射鏡將OM影像投至一臺Canon M200相機中，借助其APS-C尺寸的感光元件，能夠完整顯示出OM的視野，以幫助使用者尋找ROI。
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{microSystemPixel3.jpg}
@@ -332,99 +317,119 @@ Tiff檔案大致可分為兩部分，前半部分儲存的是檔案中每一張�
 在最早的規劃中，第二階段的系統應該要從第一階段移動樣品的方式，改成以Galvo進行移動光源的方式掃描，但經過評估後，發現Galvo的運作方式並不適合線掃描系統。Galvo掃描的原理，是改變雷射點光源照射在樣品上的位置，
 以一一對樣品上各個位置進行光譜量射。由於線掃描方式一次至少要將樣品上的整條掃描線完整照明，若以Galvo調動點光源的位置，則代表需要將光源在曝光時間內完整掃描一次樣品上的掃描線，並將掃描線上不同位置的像對應到狹縫上的不同位置。
 然後，這樣勢必代表仍必須以電動載台移動樣品，才能將樣品上不同位置的掃描線之影像成在固定位置的狹縫上，如此的作法與現階段以面光源照滿光學顯微鏡視野，並移動載台的方式，並無效率上的優勢，
-且以面光源照明尚有照明視野更大的優點。雖然以點光源方式理應可以相同的光源提供更強的照明，但在系統開發過程中亦沒有遇到照明強度不足的問題，因此就沿用第一階段以電動載台移動樣品的掃描方式。
+且以面光源照明尚有照明視野更大的優點。
+
 \subsection{照明}
 本系統現階段的照明設備，分別是高頻寬的Energetic LDLS與405 nm的DPSSL Laser，從兩個光纖collimator進入系統。照明光路的目標是希望能進樣擴大照明範圍，並使照明盡量均勻。
-然而在系統架設的初期，energetic的照明存在明顯的上下不均勻現象，如圖與圖的比較所示，圖是初期進行光陸校正時使用的HL-2000光源照明下的影像，可以看見將同樣的光纖接頭改接LDLS光源後，照明變得非常不均勻。
-且視野上下幾乎已經超出照明範圍。請這些都是在確認照明光路經過校正後的影像。
+然而在系統架設的初期，energetic的照明存在明顯的上下不均勻現象，如圖\ref{fig: hl2000}與圖\ref{fig: energetic}的比較所示，圖\ref{fig: hl2000}是初期進行光路
+校正時使用的HL-2000光源照明下的影像，可以看見將同樣的光纖接頭改接LDLS光源後，照明變得非常不均勻。
+且視野上下幾乎已經超出照明範圍。
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{0831focusForOmFullScanHL2000Scaled.jpg}
-    \caption{HL-2000}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{0909Energetic.jpg}
-    \caption{Energetic}
-\end{figure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{0831focusForOmFullScanHL2000Scaled.jpg}
+        \caption{HL-2000}
+        \label{fig: hl2000}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\linewidth]{0909Energetic.jpg}
+        \caption{Energetic}
+        \label{fig: energetic}
+    \end{subfigure}
+    \caption[不同白光照明下的高光譜影像均勻程度比較]{不同白光照明下的高光譜影像均勻程度比較，採用的樣品是一個帶有微結構的矽片。}
+\end{figure}  
 為了改善照明的範圍，我們首先將原本使用的12.5cm tube lens換成現在所使用的15cm tube lens，希望能更集中使用成像中間較亮的部分，不過改善的效果有限，且系統上也沒有空間再裝設焦聚更長的透鏡。
 為了要進一步改善照明的均勻度，我決定嘗試調整LDLS光源系統內，光線進入光纖的Coupler，以及光線離開光纖，進入影像系統的Collimator。經過多次嘗試後，最終得出三種組態，可以藉此瞭解前述兩個組件對於照明的影響。
 \subsubsection{最高亮度、匯聚於背焦面} \label{section: illuOriginal}
 簡言之，平移調整光線進入光纖的Coupler，會決定LDLS的照明光譜中進入光纖的波段。該Coupler原先的狀態，是調整至照明亮度最高，也可視為是最寬的頻寬進入光纖的狀態。
-而光線離開光纖，進入照明系統的Collimator，即是一個可前後調整的透鏡，則會決定照明光源在影像系統內的何處匯聚。原先是調整至會剛好使照明光源正好匯聚在顯微物鏡背焦面的位置，使打在樣品上的光線為平行光。
-在這個設定下，掃描所得的影像如圖\ref{figure: brightest_on}，可以看到影像上下明顯較暗，表示照明範圍還不夠大。從圖\ref{figure: om_brightest_on}的彩色OM影像可以看到，照明光源有類似色相差的情形出現，
+而光線離開光纖，進入照明系統的Collimator(即是一個可前後調整的透鏡)，則會決定照明光源在影像系統內的何處匯聚。原先是調整至會剛好使照明光源正好匯聚在顯微物鏡背焦面的位置，使打在樣品上的光線為平行光。
+在這個設定下，掃描所得的影像如圖\ref{figure: brightest_on}，可以看到影像上下明顯較暗，表示照明範圍還不夠大。從圖\ref{figure: brightest_on_om}的彩色OM影像可以看到，照明光源有類似色相差的情形出現，
 照明光源的影像不完整，且顏色也有分布偏移的情形。不過整體的照明尚算均勻，沒有明顯的干擾。
-\begin{figure}[t]
+\begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{on_brightest.jpg}
-    \caption{Coupled at brightest, collimated on BFP.}
-    \label{figure: brightest_on}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{on_brightest.jpg}
+        \caption{高光譜掃描影像，全像素平均強度3911}
+        \label{figure: brightest_on}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{om_on_brightest.JPG}
+        \caption{OM影像}
+        \label{figure: brightest_on_om}
+    \end{subfigure}
+    \caption{最高亮度、匯聚於背焦面的照明情形}
 \end{figure}
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.5\linewidth]{om_on_brightest.JPG}
-    \caption{OM: Coupled at brightest, collimated on BFP.}
-    \label{figure: om_brightest_on}
-\end{figure}
+
 \subsubsection{最高亮度、不匯聚於背焦面}
-從前述的設定開始做調整，若將Collimator稍微調動，使光源不要匯聚在顯微物鏡的背焦面上，可以把照明的範圍再做擴大，並完整的照滿整個物鏡視野，如圖\ref{figure: brightest_off}、\ref{figure: om_brightest_off}所示，影像不再有上下明顯的暗帶。由於光線並未匯聚於物鏡的背焦面，打在樣品上的光線並非平行光，
+從前述的設定開始做調整，若將Collimator稍微調動，使光源不要匯聚在顯微物鏡的背焦面上，可以把照明的範圍再做擴大，並完整的照滿整個物鏡視野，如圖\ref{figure: brightest_off}所示，影像不再有上下明顯的暗帶。在圖\ref{figure: brightest_off_om}的OM影像中可以看到，由於光線並未匯聚於物鏡的背焦面，打在樣品上的光線並非平行光，
 因此容易產生干擾的照明圖樣。以該螢光便樣品為例，由於螢光片半透明且具有厚度，不平行的光線穿過螢光片後，經反射後會產生不均勻的照明圖樣。
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{off_brightest.jpg}
-    \caption{Coupled at brighest, collimated off BFP.}
-    \label{figure: brightest_off}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{om_off_brighest.JPG}
-    \caption{OM: Coupled at brighest, collimated off BFP.}
-    \label{figure: om_brightest_off}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{off_brightest.jpg}
+        \caption{高光譜掃描影像，全像素平均強度2719}
+        \label{figure: brightest_off}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{om_off_brighest.JPG}
+        \caption{OM影像}
+        \label{figure: brightest_off_om}
+    \end{subfigure}
+    \caption{最高亮度、不匯聚於背焦面的照明情形}
 \end{figure}
 \subsubsection{較低亮度、匯聚於背焦面} \label{illuDark}
-為了避免上一個設定方式明顯的干擾紋路，我重新調整Coliimator，將光源匯聚至物鏡背焦面，並改為調整光纖的Coupler，以解決原初的設定中照明範圍不足的問題。在圖\ref{figure: evenest_on}、\ref{figure: om_evenest_on}中可以看見，
-經過調整後，照明關線的頻寬大幅減少，原先在\ref{section: illuOriginal}節中色相差的問題，幾乎完全消失，因此也確實可以完整的照明整個視野範圍，但由於實際進入光纖的光線已經減少許多，因此影像的整體亮度已有明顯的下滑。
+為了避免上一個設定方式明顯的干擾紋路，我重新調整Coliimator，將光源匯聚至物鏡背焦面，並改為調整光纖的Coupler，以解決原初的設定中照明範圍不足的問題。在圖\ref{figure: evenest_on}中可以看見，
+經過調整後，照明光線的頻寬大幅減少，原先在\ref{section: illuOriginal}節中色相差的問題，幾乎完全消失，因此也確實可以完整的照明整個視野範圍，但由於實際進入光纖的光線已經減少許多，因此可以從OM影像(圖\ref{figure: evenest_on_om})中看見，整體亮度已有明顯的下滑。
+(掃描影像因為經過後製，所以亮度看起來差異不大)
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{on_evenest.jpg}
-    \caption{Coupled at evenest, collimated off BFP.}
-    \label{figure: evenest_on}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{om_on_evenest.JPG}
-    \caption{OM: Coupled at evenest, collimated off BFP.}
-    \label{figure: om_evenest_on}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{on_evenest.jpg}
+        \caption{高光譜掃描影像，全像素平均強度911}
+        \label{figure: evenest_on}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{om_on_evenest.JPG}
+        \caption{OM影像}
+        \label{figure: evenest_on_om}
+    \end{subfigure}
+    \caption{較低亮度、匯聚於背焦面的照明情形}
 \end{figure}
 
-\noindent 綜上所述，照明的設定可以說是在光源光譜的完整度(頻寬)與照明範圍中做取捨，我們最後決定採取\ref{section: illuOriginal}節中的設定方式，
-雖然照明最後所得的影像會在上下有明顯的暗帶，但情形不算特別嚴重，且可以透過軟體進行後期處裡。若為了排除下上較暗的問題，而採取\ref{illuDark}的設定方式，形同於浪費了LDLS光源系統多數的光譜頻段，
-相形之下比上下的邊緣暗帶是更為嚴重問題，且也與我們因為需要更高頻寬的白光而使用LDLS的初衷背道而馳。
+\par \noindent 綜上所述，照明的設定可以說是在光源光譜的完整度(頻寬)與照明範圍中做取捨，我們最後決定採取\ref{section: illuOriginal}節中的設定方式，
+雖然照明最後所得的影像會在上下有明顯的暗帶，但情形不算特別嚴重，且可以透過軟體進行後期處裡。若為了排除下上較暗的問題，而採取\ref{illuDark}的設定方式，形同於浪費了LDLS光源系統多數的光譜頻段，且也與我們因為需要更高頻寬的白光而使用LDLS的初衷背道而馳。
 
 \subsection{.init檔}
-軟體的.init檔案，目標是將一些重要的參數，如系統的影像大小、xyz三軸的校正等，儲存在一個可以更改的文字檔案中，當系統的硬體有更動時，只要調整該.init檔案內的參數值，軟體就可以做出相應的改變，
-例如依據不同的影像尺寸進行記憶體的控管等。換句話說，透過init檔案儲存系統參數，就可以讓同一套軟體適用於不同的硬體上，只要檔案內的參數經過相應的調整即可。
+軟體的.init檔案，目標是將一些重要的參數，如系統的影像大小、xyz三軸的校正等，儲存在一個可以更改的文字檔案中，當系統的硬體有更動時，只要調整該.init檔案內的參數值，軟體就可以自動適應不同的硬體，
+例如依據不同影像感測器的影像尺寸進行記憶體的控管等等。換句話說，透過init檔案儲存系統參數，就可以讓同一套軟體適用於不同的硬體上，只要檔案內的參數經過相應的調整即可。
 
 本系統的init檔共分為五個區段，分別儲存系統視野、iXon、電動載台、光譜校正與OM相關的參數。軟體在啟動時會將這些參數一次讀取，並儲存到相應的run-time變數中，以方便隨時取用。
 我們使用的檔案語法是LabVIEW內建的Configuration file VIs所產生的標準init檔語法，其易於閱讀的特性，讓使用者可以直接透過一般的文字編輯器進行修改。其中某些參數，也會在軟體操作過程中由軟體自行做合適的修正。
 
-關於.init檔案的詳細使用說明，與每個參數所代表的意義和用處，請參閱本系統的.init檔說明文件(.init file documentaion of HSI system)。
+關於.init檔案的詳細使用說明，與每個參數所代表的意義和用處，請參閱本系統的.init檔說明文件(.init file documentaion of HSI system)。\cite{initDoc}
+
 \subsection{軟體結構調整}
 隨著程式的軟體功能漸趨完備，操作上越來越複雜，各個功能所需的程式碼也都會佔去龐大的空間，使的程式碼的原檔變得過於冗長，變得非常難以閱讀與偵錯。且許多會重複使用、或是功能相近的程式碼也浪費了不少空間。
 另外，許多資料或變數必須在程式的不同區塊間傳遞，常常需要拉很長的資料線路(LabVIEW data wire)，容易造成資料流變得混亂。為了改善這些問題，並使後續更進階的軟體功能開發更加便捷，我們決定將程式進行大規模的改造，將程式碼全部模組化，
 主程式只控制UI與執行模式，其餘功能皆以函式呼叫(LabVIEW subVI)來達成。另外，也更廣泛的以各種LabVIEW變數(LabVIEW local variable、global variable、functional global variable, FGV)來儲存並傳遞資料，使程式的
 資料流變的清楚明確。
 
-將程式完全模組化後，主程式的檔案尺寸縮減至一半，整體的程式碼也變得更加整齊、一目瞭然。在前端使用者介面完全不變的情形下，這些sunVI之間的API需要經過不少設計與調整，
+將程式完全模組化後，主程式的檔案尺寸縮減至一半，整體的程式碼也變得更加整齊、一目瞭然。在前端使用者介面完全不變的情形下，這些subVI之間的API需要經過不少設計與調整，
 才能確保基本的運作都能以正確的參數完成。我們也使用了許多control reference的傳遞，來使subVI能夠直接控制主程式上的使用者介面，這樣的操作方式減少了許多不必要的資料流，在整個模組化的過程中相當重要。
-我們也同時順便確立了程式的執行流程，在原始碼更易讀的情形下，更容易看出程式目前的所在階段，對於UI要因應不同階段做出改變，也很有幫助。
+我們也同時順便確立了程式的執行流程，在原始碼更易讀的情形下，更容易看出程式目前的所在階段，對於UI要因應不同階段做出改變，也很有幫助。關於軟體程式的結構細節，請參閱我們所撰寫的API文件。\cite{apiDoc}
 
 在資料流的精進部分，主要透過以下三種方式來達成:
 \begin{enumerate}
     \item 若是主程式內的UI相關資訊，例如使用者的滑鼠點擊位置，就以本地變數(local variable)來儲存，以方便主程式內不同的event catcher或不同模式的程式取用資料。
     \item 若是.init檔或是影像擷取設定相關的資料就以專案全域變數(project global variable)的方式儲存，如此一來每一個subVI都可以自行對同一個變數進行讀取，能夠簡化API的設計。
     \item 最主要的影像資料data cube，則以一個functional global variable儲存，主要的原因是三維影像資料的數據較多，若以傳統的全域變數方式儲存，每次讀取時資料都會被複製一次，造成記憶體的浪費。
-          另外，FGV是本身可程式化的全域變數，除了可以對存取衝突的狀況進行處裡外，也方便做一些基礎的資料處理。
+          另外，FGV是本身可程式化的全域變數，除了可以對存取衝突的狀況進行處裡外，也方便做一些基礎的資料處理。如節\ref{sec: bkg/ref}中的反射率計算。
 \end{enumerate}
 
 \subsection{使用者介面與功能}
@@ -436,7 +441,7 @@ Tiff檔案大致可分為兩部分，前半部分儲存的是檔案中每一張�
 來提醒使用者目前系統的狀態。這些動態的設計能避免讓使用者對於系統的操作狀態感到困惑。
 
 接著，雖然介面上布局排版不會在操作過程中有重大改變，但許多文字、圖表標題、尺規，會隨著顯示的內容不同，做出相應的變化。而在當下不應該被使用的控制項，也會在視覺上明顯的被淡化，
-從圖\ref{figure: acquire mode}與圖\ref{figure: scanning}的比較即可看到，進行掃描時所有的影像設定皆不應被更動，因此在介面上相關的控制項皆被淡化關閉。
+從圖\ref{figure: acquire mode}與圖\ref{figure: scanning}中Imaging Settings和Scan控制區的比較即可看到，進行掃描時所有的影像設定皆不應被更動，因此在介面上相關的控制項皆被淡化關閉。
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{acquire.jpeg}
@@ -446,12 +451,12 @@ Tiff檔案大致可分為兩部分，前半部分儲存的是檔案中每一張�
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{scanning.jpeg}
-    \caption{掃描時的軟體介面。}
+    \caption[掃描時的軟體介面。]{掃描時的軟體介面，所有控制單元皆被淡化且關閉，掃描過程中，左側的顯示幕呈現出目前的線掃描影像，上方並有標示目前的掃描進度，右側顯示幕則顯示出目前已完成掃描的高光譜影像。}
     \label{figure: scanning}
 \end{figure}
 \subsubsection{ROI框取}
-本階段中重要的軟體功能開發之一，就是圖\ref{figure: roi}中的ROI框取功能。當使用者打開OM影像畫面後，可以透過下方的拉桿調整掃描起始與結束的位置，接著只要按下ROI Scan，系統就會自動完成範圍內的掃瞄。
-該功能的開發過程中，最重要的是OM影像上所框取出的範圍，要如何轉換為實際的長度。為了完成這樣的校正，我們另外設計了一個校正用的程式，其可以讀取Canon 相機的影像，並在影像上讓使用者
+本階段中重要的軟體功能開發之一，就是圖\ref{figure: roi}中的ROI框取功能。當使用者打開右側的OM影像畫面後，可以透過下方的拉桿調整掃描起始與結束的位置，接著只要按下ROI Scan，系統就會自動完成範圍內的掃瞄。
+該功能的開發過程中，最重要的是OM影像上所框取出的範圍，要如何轉換為電動載台移動的實際長度。為了完成這樣的校正，我們另外設計了一個校正用的程式，其可以讀取Canon 相機的影像，並在影像上讓使用者
 畫上定位點，以計算樣品實際長度與螢幕顯示座標的比例關係。
 
 除此之外，這個功能的開發，也牽扯到許多OM顯示的設計。由於我們並沒有使用到Canon M200影像感測器的全幅畫面，因此OM影像需先經過裁切，這些裁切的設定也都儲存在.init檔中，可以參考.init檔的OM章節。
@@ -463,9 +468,9 @@ Tiff檔案大致可分為兩部分，前半部分儲存的是檔案中每一張�
     \label{figure: roi}
 \end{figure}
 
-\subsubsection{背景/參考光譜}
-由於本系統以平行光進行照射的特性，非常適合作反射光譜的量測。然而，量測反射光表示我們必須對光源在光譜或空間中的不均勻進行校正，換句話說，我們希望量測的是樣品在各波長下的反射率，而非光譜本身。同時，在多數的光譜量測中，我們也都必須對影像感測器的背景雜訊進行校正，
-因而著手開發背景光譜(背景雜訊)與光源參考光譜的擷取與校正功能。實際進行校正時，是將背景光譜(雜訊)油源資料中減去，再除以參考光譜。在操作的介面上，由於背景光譜幾乎可以適用於所有類型的光譜量測，而參考光譜只需要用於反射光譜的量測，因此我將其設計為兩個按鈕，可以分別進行擷取。然而需要注意的是，根據反射率的計算式
+\subsubsection{背景/參考光譜} \label{sec: bkg/ref}
+由於本系統以平行光進行照射的特性，非常適合作反射光譜的量測。然而，量測反射時我們希望量測的是樣品在各波長下的反射率，而非帶有光源在光譜或空間中不均勻的光譜本身。同時，在多數的光譜量測中，我們也都必須對影像感測器的背景雜訊進行校正，
+因而在此著手開發背景(Background)光譜(背景雜訊)與光源參考(Reference)光譜的擷取與校正功能。實際進行校正時，是將背景光譜(雜訊)由原始資料中減去，再除以參考光譜。在操作的介面上，由於背景光譜幾乎可以適用於所有類型的光譜量測，而參考光譜只需要用於反射光譜的量測，因此我將其設計為兩個按鈕，可以分別進行擷取。然而需要注意的是，根據反射率的計算式
 \begin{equation}\label{equation: reflection}
     reflection \quad rate=\frac{measurement-background}{reference-background}
 \end{equation}
@@ -478,26 +483,33 @@ Tiff檔案大致可分為兩部分，前半部分儲存的是檔案中每一張�
 系統即會顯示讓使用者選擇要瀏覽原始反射光譜影像或是校正後的反射率影像的選項。
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\linewidth]{reflection.jpeg}
-    \caption{檢視反射率影像時的軟體介面。}
+    \includegraphics[width=0.5\linewidth]{reflection.jpeg}
+    \caption[檢視反射率影像時的軟體介面。]{檢視反射率影像時的軟體介面，Data控制區塊中可以調整目前是否要檢視經過背景/參考光譜校準的光譜資訊。}
     \label{figure: reflection}
 \end{figure}
 
 \subsection{第三階段: 功能優化}
 由於第三階段的背焦面影像系統實際上只是在第二階段的系統上再加入被焦面成像的模組，因此本階段的開發主要先集中在系統各項功能的優化，並在軟體方面針對高光譜掃描影像的資料瀏覽與分析功能進行擴充，
-以其整體系統整合的基礎功能完善且穩定，最後再針對被焦面影像系統的硬體與光路進行探討。
+以期整體系統整合的基礎功能完善且穩定，最後再針對被焦面影像系統的硬體與光路進行探討。
 
 \subsection{掃描速度優化}
 掃描速度的優勢是本系統採用線掃描技術進行開發的重要原因之一，本章節說明我們對系統掃描速度所進行的量測與優化過程。
 \subsubsection{掃描迴圈}
-為了要瞭解決定掃描速度的各個因素，首先要先說明整個掃描的行程是如何進行的。所謂掃描，其實就是在樣品的數個不同位置上以相同的參數拍攝線掃描影像，
-在使用者設定好掃描範圍與掃描步進(也就是每條掃描線之間的距離)，電腦軟體會執行以下的迴圈，控制iXon與電動載台進行掃描:\textbf{首先}，將電動載台移動到欲拍攝線掃描影像的位置，
-在每個迴圈中，這個移動的距離是固定的，也就是掃描步進。\textbf{接著}，在確認電動載台已經移動到正確位置後，下指令使iXon開始擷取影像，確認iXon已經完成影像擷取後，iXon會將資料傳回電腦，
-程式並會進入下一次迴圈，重複執行以上動作的次數，是由程式以使用者設定的掃描距離除以掃描步進進行計算。\textbf{迴圈次數執行完成後}，電腦會將每條掃描線上所取得的線掃描影像接合成三維矩陣，
+為了要瞭解決定掃描速度的各個因素，首先要先說明整個掃描的行程是如何進行的。
+在使用者設定好掃描範圍與掃描步進(也就是每條掃描線之間的距離)，電腦軟體會在迴圈中執行以下的動作，控制iXon與電動載台進行掃描:
+\begin{enumerate}
+    \item \textbf{首先}，將電動載台移動到欲拍攝線掃描影像的位置，
+    在每個迴圈中，這個移動的距離是固定的，也就是掃描步進。
+    \item \textbf{接著}，在確認電動載台已經移動到正確位置後，下指令使iXon開始擷取影像，
+    \item 確認iXon已經完成影像擷取後，iXon會將資料傳回電腦，
+    程式並會進入下一次迴圈，重複執行以上動作的次數，是由程式以使用者設定的掃描距離除以掃描步進進行計算。
+\end{enumerate}
+
+\textbf{迴圈次數執行完成後}，電腦會將每條掃描線上所取得的線掃描影像接合成三維矩陣，
 為了確保該三維矩陣的「正面」是如肉眼所見的樣品影像，該矩陣還須經過旋轉，此矩陣旋轉的過程也需要時間。
 
 以下對於掃描時間的討論，皆是以一掃描範圍長3.5mm，掃描步進$10\mu m$(也就是總共拍攝350張線掃描影像並接合)，曝光時間10ms的高光譜影像掃描為例。為了瞭解其他各項影像參數(HSS, VSS)對於掃描速度的影響，
-我調整iXon的HSS, VSS進行拍攝，並量測不同組合下所有迴圈執行完成所需的時間、迴圈執行後矩陣建立與轉向所需的時間，並以LabVIEW的precision timer(High Resolution Relative Seconds.vi)量測影像擷取完成後傳輸到電腦所需的時間。
+我調整iXon的HSS, VSS進行拍攝，並量測不同組合下所有迴圈執行完成所需的時間、迴圈執行後矩陣建立與轉向所需的時間，並以LabVIEW的precision timer (High Resolution Relative Seconds.vi)量測影像擷取完成後傳輸到電腦所需的時間。
 在以下的測試中，整個掃描迴圈中有三個等待時間，分別是等待電動載台移動至定點的時間，另一是等待iXon影像擷取完成的時間，以及等待iXon將資料傳輸到電腦所需的時間。這三個等待時間的設定方式如下所述:
 \begin{enumerate}
     \item 等待電動載臺: 電腦將電動載台移動的指令傳輸給電動載台控制器後，會等待\begin{equation} \label{eq: stageWait}
@@ -506,10 +518,11 @@ Tiff檔案大致可分為兩部分，前半部分儲存的是檔案中每一張�
     \item 等待iXon擷取影像資料: 電腦在下指令給iXon進行影像擷取後，以一個while loop每1.5倍的曝光時間就詢問一次iXon的狀況，直到iXon回報擷取已完成後，才會進入迴圈內的下一個動作。
     \item 等待iXon傳輸影像資料: 電腦會等到「讀取iXon影像資料」的程式全部執行完成後，才會繼續迴圈內的下一個動作。
 \end{enumerate}
-再以上的設定下，所進行的測試結果如表\ref{tab: measuring}所示，表中的Pull sum代表350次迴圈中\textbf{等待iXon傳輸影像資料}所需時間的和，
-$t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描結束後矩陣接合與轉換所需的時間。該表格的測試提供了以下資訊，首先，若HSS頻率設定為1/3，掃描所需時間幾乎也會正好三倍，
+再以上的設定下，所進行的測試結果如表\ref{tab: measuring}所示，表中的Pull sum代表350次迴圈中等待iXon傳輸影像資料所需時間的和，
+$t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描結束後矩陣接合與轉換所需的時間。
+該表格的測試提供了以下資訊:首先，若HSS頻率設定為1/3，掃描所需時間幾乎也會正好三倍，
 相對的，VSS對掃描的速度影響較小。HSS與VSS對於iXon運作的影響，可以參考iXon說明書的附錄。\cite{ixonManual}
-接著，\textbf{等待iXon傳輸影像資料}所需的時間極短，每張照片約1-2 milliseconds。最後，矩陣接合與轉換的時間雖然只與電腦的效能有關係，但所需的時間可能會占總掃描時間的將近1/3。
+接著，等待iXon傳輸影像資料所需的時間極短，每張照片約1-2 milliseconds。最後，矩陣接合與轉換的時間雖然只與電腦的效能有關係，但所需的時間可能會占總掃描時間的將近1/3。
 \begin{table}[]
     \centering
     \begin{tabular}{lll||llll}
@@ -522,8 +535,8 @@ $t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描
         1     & 0.5 & 0.01 & 588      & 01:48.7    & 02:13.9 & 25.2      \\
         (MHz) & (s) & (s)  & (ms)     & (mm:ss)    & (mm:ss) & (s)
     \end{tabular}
-    \label{tab: measuring}
     \caption{影像設定對掃描時間的影響。}
+    \label{tab: measuring}
 \end{table}
 \subsubsection{速度提升}
 為了要使掃描的速度進一步加快，我們決定從前述的三個等待時間開始進行優化。首先，在前述的測試中已經顯示出，第三項\textbf{等待iXon傳輸影像資料}所需的等待時間極短，並不是決定掃描速度的關鍵因素。
@@ -533,48 +546,47 @@ $t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描
 直到控制器回報電動載台已經停下後，程式才跳出while loop並繼續下一個動作。然而，這樣的等待方式會造成掃描速度在各項設定下大致都變成表\ref{tab: measuring}的三倍，雖然最為保險，但其速度較難令人接受。
 最後，我們將電動載台的Drive speed (F)、acceleration/deceleration speed (R)、Startup speed (L)皆設為400，並且計時載台移動固定距離的時間，發現電動載臺確實是以400 pulse per seconds(pps)的速度前進，
 即可以此數值準確計算每次載台移動所需的等待時間，實務上，我還加上了10ms做為緩衝。
-這樣的設定方式再開發與使用過程中皆沒有遇到等待不足的問題，且掃描時間也大致回復到表\ref{tab: measuring}中的速度。
+這樣的設定方式再開發與使用過程中皆沒有遇到等待不足的問題，且等待時間也大致回復到表\ref{tab: measuring}中的速度，不過這也代表我們已經幾乎達到電動載台等待時間的極限，較難在這部分繼續推進。
 \subsubsection{iXon擷取影像資料的等待時間}
 如前所述，這段等待時間是以while loop不斷詢問iXon的方式決定，經過LabVIEW的precision timer量測後，發現以這樣的方式操作，在350張影像的掃描中，以表\ref{tab: measuring}第一列的參數設定，
-平均每張影像需要0.13213 seconds的時間iXon才會回報擷取完成。為了要減少這段等待時間，我們翻閱Andor SDK的說明書，希望能找到更快確認iXon影像擷取完成的方法，再經過各項嘗試後，
+平均每張影像需要0.13213 seconds的時間iXon才會回報擷取完成。為了要減少這段等待時間，我們翻閱Andor SDK的說明書，希望能找到更快確認iXon影像擷取完成的方法，在經過各項嘗試後，
 我們發現用來控制iXon的程式庫Andor SDK中的GetAcquisitionTiming函式，所傳回的最低影像擷取等待時間，也高達0.117 seconds。而我們最終所採用的方式，是以Andor SDK的Wait Acqusition
-函式來等待影像資料擷取，並且設定iXon只讀取CCD上我們會使用到的區域(參見圖\ref{figure: image size})，最終以LabVIEW的precision timer量測，等待時間減少至0.10662 seconds。
+函式來等待影像資料擷取，並且設定iXon只讀取CCD上我們會使用到的區域(參見圖\ref{figure: image size})，最終以LabVIEW的precision timer量測，等待時間減少至0.10662 seconds，換句話說，我們已經小幅度的超過iXon等待時間的理論極限，因此在這部分的速度優化也很難再提升了。
 
 \subsubsection{矩陣接合與旋轉}
-原先可能需耗費40秒進行的矩陣運算時間，在改以LabVIEW 的loop parrallelism操作後，能夠減少至約7秒的時間就完成。\footnote{不過該耗時仍與電腦的效能高度相關，實測在一樣的設定下，有可能僅需3秒即完成。}
-在經過以上的各式調整後，同樣進行350張線掃描，掃瞄範圍3.5mm，以0.01秒的曝光時間、0.9 HSS、3MHz VSS，掃描時間$t_1$正好為一分鐘，另約需4秒進行矩陣轉換，總計1:05即可完成掃描，並開始進行觀測。
+原先可能需耗費40秒進行的矩陣運算時間，在改以LabVIEW 的loop parrallelism操作後，能夠減少至約7秒的時間就完成。\footnote{不過該耗時仍與電腦的效能高度相關，實測在一樣的設定下，有時可能僅需3秒即完成。}
+在經過以上的各式調整後，同樣進行350張線掃描，掃瞄範圍3.5mm，以0.01秒的曝光時間、0.9 HSS、3MHz VSS，掃描時間$t_1$正好為一分鐘，另約需4秒進行矩陣轉換，總計1:05即可完成掃描。
 
 \subsection{影像檔案讀取與進階存檔}
 \subsubsection{檔案讀取}
 本系統軟體截至目前為止皆以掃描功能為核心進行開發，只有在掃描結束後能對掃描的資料進行瀏覽，存檔並關閉後只能使用其他軟體來瀏覽掃描資料。為了讓使用者能有便捷的界面對過去掃描的資料進行瀏覽，我決定以
 原有的瀏覽介面，直接加上讀取檔案的功能。在開發上，讀取檔案的程式碼並不複雜。由節\ref{section: saveTiff}所述可知，Tiff檔案由影像資料標籤，與影像資訊本身組合而成。讀取Tiff檔案的方式相當直觀，
-首先讀取影像資料標籤，並透過影像資料標籤得知影像在檔案中的位置與大小，再讀取影像本身。不過由於我們所採用的為經過擴充之後的Tiff檔案，除了有公版的Tiff標籤外，尚有其他實驗室自行開發的軟體會需要的標籤，
-這些標籤分別儲存在兩個影像資料索引中(Image File Directory):公版IFD與實驗室的ULS IFD\footnote{IFD基本上就是將一群用途相似的影像資料標籤放在檔案中的相鄰位置，組成一個影像資料標籤的群組。}，
+首先讀取影像資料標籤，並透過影像資料標籤得知影像在檔案中的位置與大小，再讀取影像本身，
 整體讀檔的操作順序大致如下所述。
 \begin{enumerate}
     \item 檔案起始處，跳過位元端序宣告\footnote{讀取檔案時理應先確認檔案寫入的端序設定，但由於本系統寫檔時一律以little-endian方式，因此讀檔時也一律採取little-endien設定，故不再讀取檔案起始處的端序宣告。}等數個位元組後(請參閱原始碼)，即是公版IFD，從此處開始讀取基本的影像資料標籤。
     \item 因為每個影像資料標籤的大小皆為固定的12位元組，從此處開始每12個位元組即為一個影像資料標籤，依序讀取即可。
-    \item 每個影像資料標籤皆依序包含:2個位元組儲存其ID(一個U16數字)、2個位元組儲存其檔案類型、4個位元組儲存其數量，剩下4個位元組儲存標籤資料本身。依此方式，即可讀出影像資料的ID，從前述.xlsx檔案即可對照出其意義，接著讀資料檔案型態後，即可以相應的方式將其最後幾個位元組的資料unflatten出來。
-    \item 公版影像資料標籤中，有一個標籤是實驗室IFD的位置，從這個位置資訊即可以相同方式讀出所有必須的影像資料標籤。
-    \item 公版影像資料標籤中，另有一個標籤是影像資料的位置(image strip offset)，透過該位置資訊即可知道影像資料的位置，並存其他影像資料標籤計算出其大小，直接到該位置將正確大小的資料unflatten為正確大小的三維I32矩陣，所得的矩陣就跟剛掃描完時的矩陣擁有相同的性質，可以被原本的軟體直接讀取。
+    \item 每個影像資料標籤皆依序包含:2個位元組儲存其ID(一個U16數字)、2個位元組儲存其檔案類型、4個位元組儲存其數量，剩下4個位元組儲存標籤資料本身。
+    \item 公版影像資料標籤中，有一個我們自行定義的影像資料標籤的位置，從這個位置資訊即可以相同方式讀出所有必須的影像資料標籤。
+    \item 公版影像資料標籤中，另有一個標籤是影像資料的位置(image strip offset)，透過該位置資訊即可知道影像資料的位置，並從其他影像資料標籤計算出其大小，直接到該位置將正確大小的資料unflatten為正確大小的三維I32矩陣，所得的矩陣就跟剛掃描完時的矩陣擁有相同的性質，可以被原本的軟體直接讀取。
 \end{enumerate}
 
-有時使用者開啟軟體，僅是需要讀取檔案並瀏覽光譜，此時可以點按進入Readout Mode，系統即會跳過軟體的影像設定與掃描程序，直接進入瀏覽模式。
+有時使用者開啟軟體，僅是需要讀取檔案並瀏覽光譜，此時可以點按進入我們所開發的讀取模式(Readout Mode)，系統即會跳過軟體的影像設定與掃描程序，直接進入瀏覽模式。
 另外，系統軟體開啟時，會自動啟動iXon的Andor SDK與Canon EDSDK，軟體會透過這兩個外部程式庫的執行錯誤來判定軟體系統是否有成功與硬體系統連接，並跳出視窗提醒使用者，同時也會避免對沒有連接的硬體系統下達指令，以避免更多錯誤產生。
 若軟體偵測到系統的主要影像感測器iXon沒有連接上，即會自動進入讀取模式。
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{detectHW.jpeg}
-    \caption{軟體會自行偵測硬體系統是否存在。}
+    \caption{軟體會自行偵測硬體系統是否存在，並跳出說明警示。}
     \label{figure: detect hardware}
 \end{figure}
 \subsubsection{TIFF存檔之擴充}
-為了要使軟體在讀檔時能夠適當地調整UI，例如顯示實際的掃描尺寸，並且在掃描影像檔案內儲存影像分析與比較時必要的資訊，我將原本的實驗室IFD內的影像資料標籤進行了擴充，
-表\ref{tab: new tag}列出這次所新增的所有標籤，這些標籤都在實驗室IFD區段，讀取方式與原本的標籤亦都相同。
-要在存檔時新增標籤，可以如節\ref{section: saveTiff}所述一般以實驗室原有的Tiff存檔程式庫進行操作即可。
+為了要使軟體在讀檔時能夠適當地調整UI，例如顯示實際的掃描尺寸，並且在掃描影像檔案內儲存影像分析與比較時必要的資訊，我將自訂義影像資料標籤進行了擴充，
+表\ref{tab: new tag}列出這次所新增的所有標籤，這些標籤的讀取方式與原本的標籤亦都相同。
+
 \begin{table}[ht]
     \begin{tabular}{lllll}
-        ID & Type    & No. & Content               & Description             \\
+        ID & Type    & No. & Content               & Comment             \\
         70 & 4(U32)  & 1   & HSI: Step Length      & in um                   \\
         71 & 11(SGL) & 1   & HSI: Real Y Dimension & in mm                   \\
         72 & 11(SGL) & 1   & HSI: Real X Dimention & in mm                   \\
@@ -589,9 +601,9 @@ $t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描
 \end{table}
 
 \subsubsection{背景/參考光譜之儲存}
-至此，Tiff檔案已經存有多數必要的高光譜影像資訊，但使用者若進行反射率的觀測後，存檔時只會存下原始的觀測資料，背景/參考光譜影像
-由於iXon每次擷取影像時的影像尺寸皆為固定，背景/參考光譜影像的尺寸與其所需的位元組數量，也可以由其他影像資料標籤，如影像長寬與data cube層數等標籤得知，因此在存檔
-讀檔時軟體僅須由檔案最後，往回已推得的位元組開始讀取
+至此，Tiff檔案已經存有多數必要的高光譜影像資訊，但使用者若進行反射率的觀測後，存檔時只會存下原始的觀測資料，不包含背景/參考光譜影像，這將會使的反射率的資訊無法在之後再被存取，因此我們再TIFF檔的最後，寫入當次掃描時的背景/參考光譜。
+再最後做寫入的原因是，由於iXon每次擷取影像時的影像尺寸皆為固定，背景/參考光譜影像的尺寸與其所需的位元組數量，也可以由其他影像資料標籤，如影像長寬與data cube層數等標籤得知，因此在
+讀檔時軟體僅須由檔案最後，往回已推得的位元組開始讀取即可。不必將背景/參考光譜與原本的多層影像資料儲存在一起，也才不必大幅調整整個寫檔過程。
 
 \subsection{光譜量測與瀏覽實例}
 本階段的軟體新功能開發，以高光譜影像資料的瀏覽與分析為主，我們加入了以下數個功能，來方便使用者對於系統掃描出的影像進行分析:
@@ -601,8 +613,8 @@ $t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描
     \item 在光譜顯示幕上，以滑鼠點選或輸入數值，可以在特定的波長處讀取光譜在該處的強度，在live view時這個功能也可以使用，因此也很適合用來確認是否準焦。
     \item 以上的瀏覽功能，在使用者進行點選或輸入時，相應的顯示幕上都會出現圖標標示出目前觀測的位置。
 \end{itemize}
-以下說明本系統以不同照明方式進行掃描時，在影像瀏覽介面所能進行的各項觀測操作，我們以同樣的橘色螢光片+銅網樣品，分別進行雷射光源照明的螢光光譜觀測，
-以及高頻寬白光照明的反射光譜觀測，藉此印證系統的觀測能力與瀏覽功能。該螢光片樣品的結構，是在約$3.5mm^2$平方的橘色螢光片上，放上一個微小的銅網，銅網的正方形網格尺寸約為$127\mu m$。
+這些瀏覽功能的開發與實作方式，在本系統的詳細開發文件中有說明。\cite{sysDoc}以下說明本系統以不同照明方式進行掃描時，在影像瀏覽介面所能進行的各項觀測操作，我們以同樣的橘色螢光片+銅網樣品，分別進行雷射光源照明的螢光光譜觀測，
+以及高頻寬白光照明的反射光譜觀測，藉此印證系統的觀測能力與瀏覽功能。該螢光片樣品的結構，是在約$3.5mm^2$的橘色螢光片上，放上一個微小的銅網，銅網的正方形網格尺寸約為$127\mu m$。
 \subsubsection{螢光光譜}
 \begin{figure}
     \centering
@@ -628,7 +640,7 @@ $t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描
 \begin{figure}
     \centering
     \includegraphics[width = 0.9\linewidth]{1211_10um_15msLaser-1.jpg}
-    \caption{平均過後的螢光高光譜影像，以 405nm 雷射激發。本照片的比例經過調整，以符合樣品實物。實際大小約
+    \caption[以ImageJ平均過後的螢光高光譜影像]{以ImageJ平均過後的螢光高光譜影像，以 405nm 雷射激發。本照片的比例經過調整，以符合樣品實物。實際大小約
     為 1.2×3.5mm，由 350 張單線光譜影像所接合而成}
     \label{fig: flourenceAvg}
 \end{figure}
@@ -636,7 +648,7 @@ $t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描
 \begin{figure}
     \centering
     \includegraphics[width = 0.9\linewidth]{1211_10um_15msLaser-1.jpg}
-    \caption{螢 光 的 高 光 譜 影 像， 僅 擷 取 約 在
+    \caption[螢光的高光譜影像]{螢 光 的 高 光 譜 影 像， 以ImageJ僅 擷 取 約 在
     628nm 下的樣品影像。}
     \label{fig: flourence628}
 \end{figure}
@@ -644,7 +656,7 @@ $t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描
 \begin{figure}
     \centering
     \includegraphics[width = 0.9\linewidth]{1211_10um_15msLaser.tiff137-1.jpg}
-    \caption{螢光的高光譜影像，僅擷取約在 526nm 下
+    \caption[螢 光 的 高 光 譜 影 像(526nm)]{螢光的高光譜影像，僅擷取約在 526nm 下
     的樣品影像，已經幾乎不可見。}
     \label{fig: flourence526}
 \end{figure}
@@ -680,12 +692,16 @@ $t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描
 \begin{figure}
     \centering
     \includegraphics[width = 0.9\linewidth]{1211_10um_10ms137-1.jpg}
-    \caption{白 光 的 高 光 譜 影 像， 僅 擷 取 約 在
+    \caption[白 光 的 高 光 譜 影 像， 僅 擷 取 約 在
+    526nm 下的樣品影像]{白 光 的 高 光 譜 影 像， 僅 擷 取 約 在
     526nm 下的樣品影像，仍然相當清楚。}
     \label{fig: reflec526}
 \end{figure}
 
 \subsubsection{OBF Revisited}
+我們在節\ref{sec: OBF}中提到，應該搭配Specim線光譜儀使用的Order Blocking Filter，由於硬體的限制，在本研究的系統安裝過程中並未加入，
+事實上，在本系統開發過程中，皆沒有在任何影像中看到二階干涉的影響，前述所呈現的兩種高光譜影像，也沒有觀察到任何像是二階光譜的線索。
+不過這或許一方面是由於我們未曾使用超過30ms的曝光時間，在更長的曝光時間下，二階干涉是否會造成影響，值得後人加以深究。
 \subsection{背焦面影像的探討}
 \begin{figure}
     \centering
@@ -703,32 +719,37 @@ $t_1$代表350次迴圈執行所需的總共時間，$t_2-t_1$則是代表掃描
 經過數次調整後，可以同時分別觀察實域影像與背焦面影像。
 
 為了方便對成像鏡與成像位置進行調整，我們以一部小巧的彩色CCD相機取代龐雜的線光譜儀+iXon影像系統，透過彩色CCD在可見光範圍附近的基礎光譜解析能力，
-先對背焦面影像進行初步的研究。圖\ref{fig: 300 bfp}呈現出300 grating在LED白光照明、40倍顯微物鏡下，於本系統所觀測到的背焦面影像，同時在系統上的另一部相機，
+先對背焦面影像進行初步的研究。圖\ref{fig: 300 bfp}呈現出300 Grooves/mm grating在LED白光照明、40倍顯微物鏡下，於本系統所觀測到的背焦面影像，同時在系統上的另一部相機，
 則可以觀測到如圖\ref{fig: 300 real}的grating實域影像。關於grating的背焦面影像，則能以圖\ref{fig: 500 bfp}來相互瞭解比較。
 grating在白光照射下，會將同樣波長的光線以同樣的角度反射；而背焦面影像的主要性質，則是會將物鏡前同樣角度的入射光線，成像於同樣的位置(見節\ref{bfpimage})，
 因此，在grating的背焦面影像上，同樣波長的光線應會被成像於背焦面影像影像的同樣位置。圖\ref{fig: 500 bfp}與\ref{fig: 300 bfp}中皆可看見不同顏色(不同波長)的
-光線被成像在不同位置，而產生類似彩虹一般的顏色分布。透過兩圖之間的比較，也可以看見，由於不同波長的光線經500 grating反射後散開的角度會比300 grating來的更開，
-因此圖\ref{fig: 500 bfp}上不同顏色的位置分布區隔更明顯。另外，500 grating的各階干涉之間的距離也理應會比300 grating來的更遙遠，也可以透過兩圖的比較來驗證，
-圖\ref{fig: 300 bfp}中300 grating的各階干涉非常接近，導致有明顯的重疊。
+光線被成像在不同位置，而產生類似彩虹一般的顏色分布。透過兩圖之間的比較，也可以看見，由於不同波長的光線經500 Grooves/mm grating反射後散開的角度會比300 Grooves/mm grating來的更開，
+因此圖\ref{fig: 500 bfp}上不同顏色的位置分布區隔更明顯。另外，500 Grooves/mm grating的各階干涉之間的距離也理應會比300 Grooves/mm grating來的更遙遠，也可以透過兩圖的比較來驗證，
+圖\ref{fig: 300 bfp}中300 Grooves/mm grating的各階干涉非常接近，導致有明顯的重疊。
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width = 0.8\linewidth]{300bfp.jpeg}
-    \caption{BFP of 300 grating}
-    \label{fig: 300 bfp}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width = \linewidth]{300bfp.jpeg}
+        \caption{BFP image}
+        \label{fig: 300 bfp}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width = \linewidth]{300real.jpeg}
+        \caption{Real space image}
+        \label{fig: 300 real}
+    \end{subfigure}
+    \caption{Image of 300 Grooves/mm grating}
 \end{figure}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width = 0.8\linewidth]{300real.jpeg}
-    \caption{Real space image of 300 grating}
-    \label{fig: 300 real}
-\end{figure}
+
 
 \begin{figure}[h]
     \centering
     \includegraphics[width = 0.8\linewidth]{500bfp.jpeg}
-    \caption{BFP of 500 grating}
+    \caption{BFP of 500 Grooves/mm grating}
     \label{fig: 500 bfp}
 \end{figure}
 
