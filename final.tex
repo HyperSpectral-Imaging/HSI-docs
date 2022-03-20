@@ -29,7 +29,7 @@
 \renewcommand{\baselinestretch}{1.35}
 \renewcommand{\figurename}{圖}
 \renewcommand{\tablename}{表}
-\renewcommand{\abstractname}{摘要}
+\renewcommand{\abstractname}{致謝}
 \renewcommand{\contentsname}{目錄}
 \renewcommand{\listtablename}{表格目錄}
 \renewcommand{\listfigurename}{圖片目錄}
@@ -48,24 +48,37 @@
 \begin{document}
 \maketitle
 \pagenumbering{roman}
-\section*{致謝}
-特別感謝張玉明老師將本系統的開發交付給我，並在過程中給予無私的支持與指導。
+\begin{abstract}
+    特別感謝張玉明老師將本系統的開發交付給我，並在過程中給予無私的支持與指導。
 本系統開發承蒙科技部110學年度大專學生參與專題研究計畫
 支持(計畫編號110-2813-C-002-218-M)，另感謝實驗室的陳
 維良博士帶我了解光學系統的基礎知識、黎文鴻博士協助光路的調整，並承接本研究的後續開發，以及羅詔元博士在LabVIEW程式撰寫給予許多指導，和黃鈺淳在研發過程中鼎力
 協助。
+\end{abstract}
+
+\newpage
 \section*{摘要}
-本研究希冀以新穎的線掃描技術，建立一部更具效率的高光譜(Hyperspectral or spectral mapping)顯微影像系統，以更進步的技術滿足新穎材料、奈米微結構或生物組織等研究領域的光譜量測需求。本系統採用的線掃描技術，能一次對樣品上的「一條線」進行光譜展開，與傳統單點式的高光譜掃描系統相比，對於面積較大的樣品，能進一步提升掃描速度。另外，本系統設有可切換的照明光源，能對應不同的光譜觀測需求，例如以雷射激發進行螢光光譜量測，或以白光進行反射光譜的觀測。我們進一步希望將本系統的觀測能力拓展至更豐富的光與物質作用(Light-matter interaction)探討，因此也對「動量域影像」相關的影像系統進行測試與探討。
+本研究希冀以新穎的線掃描技術，建立一部更具效率的高光譜(Hyperspectral or spectral mapping)顯微影像系統，以進步的技術滿足新穎材料、奈米微結構或生物組織等研究領域的光譜量測需求。本系統採用的線掃描技術，能一次對樣品上的「一條線」進行光譜展開，與傳統單點式的高光譜掃描系統相比，對於面積較大的樣品，能進一步提升掃描速度。另外，本系統設有可切換的照明光源，能對應不同的光譜觀測需求，例如以雷射激發進行螢光光譜量測，或以白光進行反射光譜的觀測。此外，我們進一步希望將本系統的觀測能力拓展至更豐富的光與物質作用(Light-matter interaction)探討，因此也對「動量域影像」(Momentum space image)相關的影像系統進行測試與探討。
 
 本研究涵蓋整個系統開發的過程，從最初的概念驗證，到光學、機構硬體的開發和組裝，再到軟體操作介面與觀測、分析功能的建立，全數都由研究者自行開發完成。其中，本研究最關鍵的議題，是肩負系統整合的後端軟體開發。我們以LabVIEW程式語言開發了一套能控制系統各個組件，並完成線掃描高光譜顯微影像處裡的軟體。這套軟體除了應用於本研究所開發的系統外，由於其支援大量的可調參數，也可以應用於其他類似的線掃描高光譜影像系統。另外，在軟體的前端介面與觀測功能開發部分，我們結合實驗室多年來在光譜觀測領域的專業，使得整套系統能被以直觀、有效率的方式操作，並整合從光譜資訊的擷取到分析的所需功能。
 
 總結來說，本研究的成果將能被應用在許多光譜量測的領域，特別是在觀測範圍較大時。我們也在本研究中詳細述及許多開發過程中，無論是在硬體或軟體方面，所遇到的困難之處與解決之道，希望本研究對於有意將線掃描高光譜影像技術應用於其他領域，或是開發不同的顯微高光譜影像技術的研究者，能提供參考與助益。
 
 \noindent \textbf{\CJKsans{關鍵詞: 高光譜影像、線掃描、顯微光譜影像、動量域影像、背焦面影像}}
+\newpage
 \section*{Abstract}
+In this research, we set out to develope a more efficient microscopic spectral imaging system using a novel "line scan" technology, in order to fulfill the demand of spectral mapping measurement in the field of material science, nano structure, biology and other research disciplines. Compared to traditional spcetral measurement technology, which disperse spectra from a single source, a line scan approach could increase the scanning speed by dispersing spectrum from every position in a line on the sample, which means we are imaging a line instead of a dot. Moreover, our system could accomplish various specral measurement types, including flourence spectrum and reflection spectrum measurement. Finally, we want to further expand the capability of the system to solve more light-matter interaction issues, so we also developed a momentum space imaging system in the end.
+
+This reseach covers the whole proccess of the development, from proof of concept to optical and mechanical design, then to the development of user interface and more advanced measuring or analysis features. The highlight here is the system integration back-end software. We developed the software using LavVIEW, and it's capable of controlling and dispatching complex spectral image scanning tasks to every hardware in the system and then perform neccessary image processing for the line scan method. This software is compatible to other similar hardware system too, since the majority of system software parameters can be easily modified (without any code) to adapt different hardware. In the mean time, we combined our in-house expertise of spectral measurement to develope a wide range of observation functionality that is easy to use.
+
+In all, the result of this research can be implemented in a lot of fields that require microscopic hyperspectral imaging. We also carefully documented the difficulties and cooresponding solutions we faced during the development, hoping to pave the way for future reseach that requires similar technology.
+
+\noindent \textbf{\CJKsans{Keywords: Hyperspectral, Line scan, Microscopic spectral image, Momentum space image, Back focal plane image}}
+\newpage
 \tableofcontents
 \listoffigures
 \listoftables
+\newpage
 \pagenumbering{arabic}
 \section{前言與研究目的}
 傳統的光譜量測技術，
@@ -199,7 +212,7 @@
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{imagesize.jpg}
-    \caption{Image size when combined}
+    \caption{成像尺寸}
     \label{figure: image size}
 \end{figure}
 
@@ -223,7 +236,7 @@
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.65\linewidth]{PXL_20210723_094307842.jpg}
-    \caption{Stage, spectrograph, ccd}
+    \caption{第一階段系統樣貌}
     \label{figure: 1 stage setup}
 \end{figure}
 
@@ -317,7 +330,7 @@ TIFF檔案大致可分為兩部分，前半部分儲存的是檔案中每一張�
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{microSystemPixel3.jpg}
-    \caption{Micro system.}
+    \caption{第二階段系統樣貌}
 \end{figure}
 
 \subsubsection{Galvo}
@@ -754,13 +767,13 @@ grating在白光照射下，會將同樣波長的光線以同樣的角度反射�
         \caption{Real space image}
         \label{fig: 300 real}
     \end{subfigure}
-    \caption{Image of 300 grooves/mm grating}
+    \caption{300 grooves/mm grating的影像}
 \end{figure}
 
 \begin{figure}[h]
     \centering
     \includegraphics[width = 0.8\linewidth]{500bfp.jpeg}
-    \caption[BFP of 500 grooves/mm grating]{BFP of 500 grooves/mm grating。像中左側的一皆影像比右側的一皆影像還亮，是因為grating的製造方式，是帶有角度的刻痕，因此刻痕的其中一側會反射較多。}
+    \caption[500 grooves/mm grating的背焦面影像]{500 grooves/mm grating的背焦面影像。像中左側的一皆影像比右側的一皆影像還亮，是因為grating的製造方式，是帶有角度的刻痕，因此刻痕的其中一側會反射較多。}
     \label{fig: 500 bfp}
 \end{figure}
 
